@@ -10,41 +10,40 @@ import Lounge from './components/Lounge';
 import LinkPage from './components/LinkPage';
 import RequireAuth from './components/RequireAuth';
 import Member from './components/Member';
+import ChangePWD from './components/ChangePWD';
+import ChangePhoto from './components/ChangePhoto';
 import { Routes, Route } from 'react-router-dom';
 
 
-// 這裡可以塞進env
-// const ROLES = {
-//   'User': 2001,
-//   'Editor': 1984,
-//   'Admin': 5150
-// }
-
-// 在Outlet.js加入Header跟Footer
+// 在Layout.js加入Header跟Footer
 function App() {
-
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        {/* public routes */}
+        {/* 無權限的路由 */}
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="linkpage" element={<LinkPage />} />
         <Route path="unauthorized" element={<Unauthorized />} />
 
-        {/* we want to protect these routes */}
+        {/* 有權限的路由 */}
         <Route element={<RequireAuth allowedRoles={1} />}>
           <Route path="/" element={<Home />} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={1} />}>
-          <Route path="/member" element={<Member />} />
+          <Route path="/member/:user" element={<Member />} />
+        </Route>
+        <Route element={<RequireAuth allowedRoles={1} />}>
+          <Route path="/member/:user/changePWD" element={<ChangePWD />} />
+        </Route>
+        <Route element={<RequireAuth allowedRoles={1} />}>
+          <Route path="/member/:user/changePhoto" element={<ChangePhoto />} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={2} />}>
           <Route path="editor" element={<Editor />} />
         </Route>
-
 
         <Route element={<RequireAuth allowedRoles={3} />}>
           <Route path="admin" element={<Admin />} />
@@ -54,7 +53,7 @@ function App() {
           <Route path="lounge" element={<Lounge />} />
         </Route>
 
-        {/* catch all */}
+        {/* 只要是為匹配的路由，都會跑到這裡，對應server端檔案app.js第57行 */}
         <Route path="*" element={<Missing />} />
       </Route>
     </Routes>

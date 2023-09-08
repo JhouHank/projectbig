@@ -6,11 +6,9 @@ const Admin = () => {
         <section>
             <h1>管理員頁面</h1>
             <br />
-            {/* <Users/> */}
-            <br />
-            <p>你必須以管理員身分登入</p>
+            <p>管理員身分可以存取這個頁面</p>
             <div className="flexGrow">
-                <Link to="/">Home</Link>
+                <Link to="/">主頁</Link>
             </div>
         </section>
     )

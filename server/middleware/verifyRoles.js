@@ -1,6 +1,6 @@
 // verifyRoles 函式是一個高階函式，它接受一組允許的角色作爲參數，然後返回一箇中間件函式。
 const verifyRoles = (...allowedRoles) => {
-    console.log("有進到verifyRoles");
+    // console.log("有進到verifyRoles");
     return (req, res, next) => {
         // 檢查請求對象 req 是否具有 roles 屬性。如果沒有，它會立即返回401狀態碼，表示未授權。
         if (!req?.roles) return res.sendStatus(401);

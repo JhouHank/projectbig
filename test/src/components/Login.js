@@ -31,7 +31,6 @@ const Login = () => {
                 }
             );
             console.log(JSON.stringify(response?.data));
-            // console.log(JSON.stringify(response));
             const accessToken = response?.data?.accessToken;
             const roles = response?.data?.roles;
             setAuth({ user, pwd, roles, accessToken });
@@ -80,7 +79,8 @@ const Login = () => {
                     <p>
                         尚未創建帳戶？<br />
                         <span className="line">
-                            <Link to="/register">註冊</Link>
+                            <Link to="/register">註冊</Link><br/>
+                            <Link to="/linkpage">連結頁面</Link>
                         </span>
                     </p>
                 </section>

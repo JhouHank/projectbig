@@ -1,17 +1,19 @@
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+// import { useNavigate, Link } from "react-router-dom";
 import { useContext } from "react";
 import AuthContext from "../context/AuthProvider";
 
 const Home = () => {
-    const { setAuth } = useContext(AuthContext);
-    const navigate = useNavigate();
+    const { auth } = useContext(AuthContext);
+    // const {auth, setAuth } = useContext(AuthContext);
+    // const navigate = useNavigate();
 
-    const logout = async () => {
-        // if used in more components, this should be in context 
-        // axios to /logout endpoint 
-        setAuth({});
-        navigate('/linkpage');
-    }
+    // const logout = async () => {
+    //     // 登出的時候把auth的值設為空物件
+    //     setAuth({});
+    //     // 然後轉到連結頁面
+    //     navigate('/linkpage');
+    // }
 
     return (
         <section>
@@ -27,10 +29,10 @@ const Home = () => {
             <br />
             <Link to="/linkpage">前往連結頁面</Link>
             <br />
-            <Link to="/member">前往會員頁</Link>
-            <div className="flexGrow">
+            <Link to={`/member/${auth.user}`} >前往會員頁</Link>
+            {/* <div className="flexGrow">
                 <button onClick={logout}>登出</button>
-            </div>
+            </div> */}
         </section>
     )
 }

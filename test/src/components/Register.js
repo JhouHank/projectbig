@@ -97,7 +97,8 @@ const Register = () => {
     }
 
     return (
-        <>
+        // 下面這個<>是 <React.Fragment> 的語法糖
+        <>  
             {success ? (
                 <section>
                     <h1>成功!</h1>
@@ -218,7 +219,8 @@ const Register = () => {
                     <p>
                         已經註冊了?<br />
                         <span className="line">
-                            <Link to="/">登入</Link>
+                            <Link to="/">登入</Link> <br/>
+                            <Link to="/linkpage">取消</Link>
                         </span>
                     </p>
                 </section>

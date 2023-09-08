@@ -6,7 +6,8 @@ const Missing = () => {
             <h1>錯誤！</h1>
             <p>找不到頁面</p>
             <div className="flexGrow">
-                <Link to="/">訪問主頁</Link>
+                <Link to="/">回到主頁</Link> <br/>
+                <Link to="/" replace>回到上一頁</Link>
             </div>
         </article>
     )
