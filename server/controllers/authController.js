@@ -31,17 +31,19 @@ const handleLogin = async (req, res) => {
                     });
                 } else if (response){
                     // 比對成功
+                    // ???
+                    const abc = data[0].roles
                     // 產生accessToken
                     const accessToken = jwt.sign(
-                        { "user": user },
+                        { "user": user,"roles" : abc },
                         process.env.ACCESS_TOKEN_SECRET,
-                        { expiresIn: '10s' }
+                        { expiresIn: '30s' }
                     );
                     // 產生refreshToken
                     const refreshToken = jwt.sign(
                         { "user": user },
                         process.env.REFRESH_TOKEN_SECRET,
-                        { expiresIn: '15s' }
+                        { expiresIn: '1hr' }
                     );
                     // 第一個參數為 Payload 用來儲存包含各種有關用戶或其他相關資訊的數據。
                     // 第二個參數為 Signature 是個字串型態的簽署金鑰，這是用於對 JWT 進行簽名的密鑰。簽名是一種保護 JWT 不被篡改的方式。

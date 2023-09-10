@@ -1,4 +1,3 @@
-// ???
 const jwt = require('jsonwebtoken');
 const myDBconn = require('../config/db');
 const dotenv = require("dotenv");
@@ -12,17 +11,16 @@ const handleRefreshToken = (req, res) => {
     } 
     // 如果找到了refreshToken，接著在資料庫中尋找具有相同refreshToken的用戶。
     const refreshToken = cookies.jwt;
-    myDBconn.query('SELECT user,refreshtoken FROM member WHERE refreshToken = ?', 
-            [cookies.jwt],function(err, data){
+    myDBconn.query('SELECT user,refreshtoken,roles FROM member WHERE refreshToken = ?', 
+            [refreshToken],function(err, data){
                 if(err){
                     console.log("SQL指令執行錯誤=====");
                     console.log(err);
-                } else if(data.length = 0){
+                } else if(data.length == 0){
                     // 如果找不到對應的用戶，則返回 403 狀態碼，表示禁止訪問（Forbidden）
                     return res.sendStatus(403);
                 } else if(data.length > 0){
                     // 如果找到了用戶，接著使用 jwt.verify 函式來驗證refreshToken的有效性。
-
                     // 第一個參數為你的 API Token 也就是 JWT 而變數 token 是由 article.controller.js 中傳過來的，
                     // 第二個參數為 Signature(簽署密碼)，為字串型態，記得要與當時登入時所簽署的密碼一樣否則會出問題，
                     // 第三個參數為 function callback 也就是回傳結果，其中 err 為錯誤訊息、decoded 為 JWT 解密後儲存的資料，
@@ -32,17 +30,18 @@ const handleRefreshToken = (req, res) => {
                         (err, decoded) => {
                             // 如果錯誤，或是解密出的user與資料庫中的user不相符，則返回403狀態碼
                             if (err || data[0].user !== decoded.user){
+                                console.log("比對錯誤");
                                 return res.sendStatus(403);
                             } 
                             // 如果refreshToken驗證成功，並且解密出的user與資料庫中的user相符，
                             // 則會生成一個新的accessToken，並將其返回給用戶端。
                             const accessToken = jwt.sign(
-                                { "user": decoded.user },
+                                { "user": decoded.user,"roles":data[0].roles },
                                 process.env.ACCESS_TOKEN_SECRET,
-                                { expiresIn: '10s' }
+                                { expiresIn: '30s' }
                             );
-                            console.log("refresh Access Token");
                             // 將生成的 accessToken 回傳給用戶端
+                            // console.log("新的accessToken:",accessToken);
                             res.json({ accessToken })
                         }
                     );

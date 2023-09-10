@@ -2,7 +2,6 @@
 const myDBconn = require('../config/db');
 
 const getAllUsers = async (req, res) => {
-    console.log(req);
     // 找全部用戶
     // const users = await User.find();
     myDBconn.query('select user from member',async function(err, results){

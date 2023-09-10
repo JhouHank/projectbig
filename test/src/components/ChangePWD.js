@@ -4,13 +4,15 @@ import useAuth from '../hooks/useAuth';
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from '../api/axios';
+import useLogout from "../hooks/useLogout";
+
 
 
 const CHANGEPWD_URL = '/changePWD';
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,24}$/;
 
 const ChangePWD = () => {
-    const { auth, setAuth } = useAuth();
+    const { auth } = useAuth();
     const navigate = useNavigate();
 
     const [user, setUser] = useState('');
@@ -22,6 +24,9 @@ const ChangePWD = () => {
     
     const [errMsg, setErrMsg] = useState('');
 
+    const logout = useLogout();
+
+
     useEffect(() => {
         setErrMsg('');
     }, [user, pwd, newPwd])
@@ -30,10 +35,8 @@ const ChangePWD = () => {
         setValidNewPwd(PWD_REGEX.test(newPwd));
     }, [newPwd])
 
-    const logout = async () => {
-        // 登出的時候把auth的值設為空物件
-        setAuth({});
-        // 然後轉到連結頁面
+    const signOut = async () => {
+        await logout();
         navigate('/linkpage');
     }
 
@@ -52,7 +55,7 @@ const ChangePWD = () => {
             setUser('');
             setPwd('');
             setNewPwd('');
-            logout();
+            signOut();
         } catch (err) {
             console.log(err);
             if (!err?.response) {

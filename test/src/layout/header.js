@@ -3,11 +3,15 @@ import '../assets/layout/header.css'
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom"
 import useAuth from "../hooks/useAuth"
+import useLogout from "../hooks/useLogout";
+
 
 const Header = () => {
     const [success, setSuccess] = useState(false);
-    const {auth, setAuth} = useAuth();
+    const { auth } = useAuth();
     const navigate = useNavigate();
+    const logout = useLogout();
+
     
     useEffect(() => {
         /* 下面是 componentDidMount */
@@ -15,16 +19,16 @@ const Header = () => {
         /* 上面是 componentDidMount */
     }, [auth.user]); 
 
-    const logout = async () => {
-        // 登出的時候把auth的值設為空物件
-        setAuth({});
-        // 然後轉到連結頁面
+
+    const signOut = async () => {
+        await logout();
         navigate('/linkpage');
     }
+
     return (
         <header>
             <p className='header'>這是Header</p>
-            {success ? <button onClick={logout}>登出</button> : <Link to="/login">登入</Link>}
+            {success ? <button onClick={signOut}>登出</button> : <Link to="/login">登入</Link>}
         </header>
     );
 }

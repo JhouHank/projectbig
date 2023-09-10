@@ -3,17 +3,14 @@ const jwt = require('jsonwebtoken');
 // require('dotenv').config();
 
 const verifyJWT = (req, res, next) => {
-    console.log("有進到verifyJWT");
     // 從HTTP請求的headers中提取 Authorization 標頭的值
     const authHeader = req.headers.authorization || req.headers.Authorization;
-    console.log(authHeader);
 
-    // 如果沒有提供 Authorization 標頭，則返回HTTP狀態碼401，表示未授權。
+    // 如果 authHeader 不存在或不以Bearer 開頭(注意有空格)，則返回HTTP狀態碼401，表示未授權。
     if (!authHeader?.startsWith('Bearer ')) return res.sendStatus(401);
 
     // 下面這行將JWT token從 Bearer token 字串中分割出來，並存儲在 token 變數中。
     const token = authHeader.split(' ')[1];
-    console.log(token);
     jwt.verify(
         token,
         process.env.ACCESS_TOKEN_SECRET,
