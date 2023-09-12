@@ -80,6 +80,7 @@ const Login = () => {
                         尚未創建帳戶？<br />
                         <span className="line">
                             <Link to="/register">註冊</Link><br/>
+                            <Link to="/forgetPWD">忘記密碼</Link><br/>
                             <Link to="/linkpage">連結頁面</Link>
                         </span>
                     </p>

@@ -43,11 +43,13 @@ app.use('/register', require('./routes/register'));
 app.use('/auth', require('./routes/auth'));
 app.use('/refresh', require('./routes/refresh'));
 app.use('/changePWD', require('./routes/changePWD'));
+app.use('/forgetPWD', require('./routes/forgetPWD'));
+app.use('/resetPWD', require('./routes/resetPWD'));
 app.use('/logout', require('./routes/logout'));
 
-// 未實現功能的路由
 app.use(verifyJWT);
 app.use('/users', require('./routes/api/users'));
+// 未實現功能的路由
 // app.use('/employees', require('./routes/api/employees'));
 
 // 這個路由處理程序是一個通用的錯誤處理程序，它用於處理所有未匹配到其他路由的請求，

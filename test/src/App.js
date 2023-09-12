@@ -12,6 +12,8 @@ import RequireAuth from './components/RequireAuth';
 import Member from './components/Member';
 import ChangePWD from './components/ChangePWD';
 import ChangePhoto from './components/ChangePhoto';
+import ForgetPWD from './components/ForgetPWD';
+import ResetPWD from './components/ResetPWD';
 import { Routes, Route } from 'react-router-dom';
 
 
@@ -25,6 +27,8 @@ function App() {
         <Route path="register" element={<Register />} />
         <Route path="linkpage" element={<LinkPage />} />
         <Route path="unauthorized" element={<Unauthorized />} />
+        <Route path="forgetPWD" element={<ForgetPWD />} />
+        <Route path="resetPWD/:user/:resetPWDToken" element={<ResetPWD />} />
 
         {/* 有權限的路由 */}
         <Route element={<RequireAuth allowedRoles={1} />}>
