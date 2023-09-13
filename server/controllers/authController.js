@@ -31,11 +31,11 @@ const handleLogin = async (req, res) => {
                     });
                 } else if (response){
                     // 比對成功
-                    // ???
-                    const abc = data[0].roles
+                    // 把資料庫中這個帳號的roles值提取出來，等一下放進accessToken
+                    const roles = data[0].roles;
                     // 產生accessToken
                     const accessToken = jwt.sign(
-                        { "user": user,"roles" : abc },
+                        { "user": user,"roles" : roles },
                         process.env.ACCESS_TOKEN_SECRET,
                         { expiresIn: '30s' }
                     );
@@ -49,8 +49,6 @@ const handleLogin = async (req, res) => {
                     // 第二個參數為 Signature 是個字串型態的簽署金鑰，這是用於對 JWT 進行簽名的密鑰。簽名是一種保護 JWT 不被篡改的方式。
                     // 第三個參數為 Options 是一個包含額外選項的物件，用於定義 JWT 的一些屬性，例如expiresIn、header、audience等。
                     
-                    // 將roles從資料庫中提取出來
-                    const roles = data[0].roles;
                     // 將refreshToken寫進資料庫裡
                     myDBconn.query("UPDATE member SET refreshToken = ? WHERE user = ?"
                     ,[refreshToken, user]

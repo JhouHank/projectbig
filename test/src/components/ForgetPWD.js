@@ -1,14 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
-// import { Link, useNavigate, useLocation } from 'react-router-dom'
 import axios from '../api/axios';
-const FORGETPWD_URL = '/forgetPWD';
 
+const FORGETPWD_URL = '/forgetPWD';
 
 const ForgetPWD = () => {
     const navigate = useNavigate();
-    // const location = useLocation();
-    // const from = location.state?.from?.pathname || "/";
 
     const [user, setUser] = useState('');
     const [email, setEmail] = useState('');
@@ -33,7 +30,6 @@ const ForgetPWD = () => {
             setUser('');
             setEmail('');
             navigate("/login", {replace:true});
-            // navigate(from, {replace:true});
         } catch (err) {
             console.log(err);
             if (!err?.response) {

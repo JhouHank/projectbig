@@ -16,8 +16,8 @@ import ForgetPWD from './components/ForgetPWD';
 import ResetPWD from './components/ResetPWD';
 import { Routes, Route } from 'react-router-dom';
 
-
 // 在Layout.js加入Header跟Footer
+
 function App() {
   return (
     <Routes>
@@ -57,7 +57,7 @@ function App() {
           <Route path="lounge" element={<Lounge />} />
         </Route>
 
-        {/* 只要是為匹配的路由，都會跑到這裡，對應server端檔案app.js第57行 */}
+        {/* 只要是未匹配的路由，都會跑到這裡，對應server端檔案app.js第57行 */}
         <Route path="*" element={<Missing />} />
       </Route>
     </Routes>

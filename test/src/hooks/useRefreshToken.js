@@ -7,9 +7,9 @@ const useRefreshToken = () => {
         const response = await axios.get('/refresh', {
             withCredentials: true
         });
+        // 當刷新請求成功返回時使用 setAuth 將回傳的 accessToken 的值（新的訪問令牌）
+        // 「更新」到身份驗證狀態中，
         setAuth(prev => {
-            // console.log("這是prev:",JSON.stringify(prev));
-            // console.log("這是新的accessToken:",response.data.accessToken);
             return { ...prev, accessToken: response.data.accessToken }
         });
         return response.data.accessToken;

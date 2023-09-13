@@ -1,3 +1,4 @@
+// 未實現的功能
 const Employee = require('../model/Employee');
 
 const getAllEmployees = async (req, res) => {

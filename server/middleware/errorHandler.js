@@ -1,3 +1,4 @@
+// 未實現的功能
 // 匯入日誌記錄的功能
 const { logEvents } = require('./logEvents');
 

@@ -12,7 +12,7 @@ const REGISTER_URL = '/register';
 
 const Register = () => {
     const [user, setUser] = useState('');
-    const [validName, setValidName] = useState(false);
+    const [validUser, setvalidUser] = useState(false);
     const [userFocus, setUserFocus] = useState(false);
 
     const [pwd, setPwd] = useState('');
@@ -35,7 +35,7 @@ const Register = () => {
     const [success, setSuccess] = useState(false);
 
     useEffect(() => {
-        setValidName(USER_REGEX.test(user));
+        setvalidUser(USER_REGEX.test(user));
     }, [user])
 
     useEffect(() => {
@@ -111,8 +111,8 @@ const Register = () => {
                     <form onSubmit={handleSubmit}>
                         <label htmlFor="user">
                             帳號:
-                            <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validName || !user ? "hide" : "invalid"} />
+                            <FontAwesomeIcon icon={faCheck} className={validUser ? "valid" : "hide"} />
+                            <FontAwesomeIcon icon={faTimes} className={validUser || !user ? "hide" : "invalid"} />
                         </label>
                         <input
                             type="text"
@@ -124,7 +124,7 @@ const Register = () => {
                             onFocus={() => setUserFocus(true)}
                             onBlur={() => setUserFocus(false)}
                         />
-                        <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
+                        <p id="uidnote" className={userFocus && !validUser ? "instructions" : "offscreen"}>
                             <FontAwesomeIcon icon={faInfoCircle} />
                             8至24個字元<br />
                             必須以字母開頭（不區分大小寫）<br />
@@ -212,10 +212,10 @@ const Register = () => {
                             密碼必須與一致
                         </p>
 
-                        <button disabled={!validName || !validPwd || !validMatch || !validEmail || !validPhone ? true : false}>註冊</button>
+                        <button disabled={!validUser || !validPwd || !validMatch || !validEmail || !validPhone ? true : false}>註冊</button>
                     </form>
                     <p>
-                        已經註冊了?<br />
+                        已經註冊了？<br />
                         <span className="line">
                             <Link to="/">登入</Link> <br/>
                             <Link to="/linkpage">取消</Link>

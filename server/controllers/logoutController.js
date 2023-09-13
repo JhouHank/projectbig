@@ -10,7 +10,7 @@ const handleLogout = async (req, res) => {
     const refreshToken = cookies.jwt;
     // 如果找到了refreshToken，在資料庫中尋找具有相同refreshToken的user。
     myDBconn.query('SELECT user,refreshtoken FROM member WHERE refreshToken = ?', 
-            [cookies.jwt],function(err, data){
+            [refreshToken],function(err, data){
                 if(err){
                     console.log("SQL指令執行錯誤=====");
                     console.log(err);

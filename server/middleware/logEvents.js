@@ -1,3 +1,4 @@
+// 未實現的功能
 // date-fns是一個用於日期和時間格式化的模組，它的format函數用來格式化日期和時間。
 const { format } = require('date-fns');
 // uuid是一個用於生成唯一標識符（UUID）的模組，這裡使用了 v4 函數來生成UUID。
