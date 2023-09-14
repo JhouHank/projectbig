@@ -3,16 +3,21 @@ const myDBconn = require('../config/db');
 
 const handleChangePWD = async (req, res) => {
     // 先確認有沒有相同的user
-    myDBconn.query('select user,pwd from member where user = ?',[req.body.user],async function(err, results){
+    myDBconn.query('select user,pwd from member where user = ?',[req.body.webUser],async function(err, results){
         if(err){
             console.log("SQL指令執行錯誤=====");
             console.log(err);
             return res.status(500).json({ 'message': err.message });
         } else if (results.length == 0){
-            //如果找不到符合的用戶，則返回 401 Unauthorized。
+            // 如果找不到符合的用戶，則返回 401 Unauthorized。
             return res.sendStatus(401);
         } else if(results.length > 0){
-            // 有找到相同user，先比對舊密碼跟資料庫中的密碼是否相同
+            // 有找到相同user，先比對帳號與驗證帳號是否一樣
+            if(req.body.webUser !== req.body.user){
+                // 如果不一樣，則返回 401 Unauthorized。
+                return res.sendStatus(401);
+            }
+            // 有找到相同user，再比對舊密碼跟資料庫中的密碼是否相同
             bcrypt.compare(req.body.pwd.toString(), results[0].pwd,async function(err, response){
                 if(err){
                     return res.json({

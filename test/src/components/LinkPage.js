@@ -21,18 +21,22 @@ const LinkPage = () => {
     }
     
     return (
-            <section>
-                <h1>連結</h1>
+        <div className="container text-center">
+            <section className="">
+                <h1>連結頁面</h1>
                 <br />
                 <h2>公共連結</h2>
-                {success ? <button onClick={signOut}>登出</button> : <Link to="/login">登入</Link>}
+                {success ? <button 
+                className="btn btn-primary w-25 fs-5"
+                onClick={signOut}>登出</button> : <Link className="btn btn-primary w-25 fs-5" to="/login">登入</Link>}<br/>
                 <Link to="/register">註冊</Link>
                 <br />
                 <h2>私人連結</h2>
-                <Link to="/">主頁</Link>
-                <Link to="/editor">編輯者頁面</Link>
-                <Link to="/admin">管理員頁面</Link>
+                <Link to="/">主頁</Link><br />
+                <Link to="/editor">後台？</Link><br />
+                <Link to="/admin">主 會員頁面</Link>
             </section>
+        </div>
         )
 }
 

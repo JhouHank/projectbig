@@ -20,6 +20,7 @@ const useAxiosPrivate = () => {
         );
         // 回應攔截器，它用於處理當 API 回應返回 403 錯誤（未授權）時的情況。
         // 如果出現這種情況，它會嘗試使用 refresh 函數來獲取新的訪問令牌，然後更新請求的授權標頭並重新發送請求。
+        // 這邊的API回應403，是指verifyJWT檔案的第20行所回傳的403
         const responseIntercept = axiosPrivate.interceptors.response.use(
             response => response,
             async (error) => {

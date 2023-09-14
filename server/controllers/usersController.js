@@ -3,7 +3,7 @@ const myDBconn = require('../config/db');
 const getAllUsers = async (req, res) => {
     // 找全部用戶
     // const users = await User.find();
-    myDBconn.query('select user from member',async function(err, results){
+    myDBconn.query('select user,pwd from member',async function(err, results){
         if(err){
             console.log("SQL指令執行錯誤=====");
             console.log(err);
@@ -14,7 +14,7 @@ const getAllUsers = async (req, res) => {
         } else if (results.length > 0){
             // 把全部用戶回傳
             let users = []
-            for(let i=0;i<results.length;i++){
+            for(let i = 0; i < results.length; i++){
                 users.push(results[i].user);
             }
             res.json(users);

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import useAuth from '../hooks/useAuth';
 import { Link, useNavigate, useLocation } from 'react-router-dom'
+import Transition from '../Transition';
+import cake from "../assets/images/cake.jpg";
 
 import axios from '../api/axios';
 const LOGIN_URL = '/auth';
@@ -30,10 +32,10 @@ const Login = () => {
                     withCredentials: true
                 }
             );
-            console.log(JSON.stringify(response?.data));
+            // console.log(JSON.stringify(response?.data));
             const accessToken = response?.data?.accessToken;
             const roles = response?.data?.roles;
-            setAuth({ user, pwd, roles, accessToken });
+            setAuth({ user, roles, accessToken });
             setUser('');
             setPwd('');
             navigate(from, {replace:true});
@@ -52,39 +54,55 @@ const Login = () => {
     }
 
     return (
-                <section>
-                    <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
-                    <h1>登入</h1>
-                    <form onSubmit={handleSubmit}>
-                        <label htmlFor="user">帳號:</label>
-                        <input
-                            type="text"
-                            id="user"
-                            autoComplete="off"
-                            onChange={(e) => setUser(e.target.value)}
-                            value={user}
-                            required
-                        />
+        <Transition>
+            <section className="container d-flex justify-content-center align-items-center">
+                <div className="row border rounded-5 p-3 bg-white shadow box-area">
+                    <div className="col-md-6 left-box rounded-4 d-flex justify-content-center align-items-center flex-column bg-primary">
+                        <div className="featured-image mb-3">
+                            <img src={cake} className="img-fluid" alt='cake'/>
+                        </div>
+                        <p className="text-white fs-2 fw-bolder">Be Verified</p>
+                        <small className="text-white text-wrap text-center">Join experienced Designers on this platform.</small>
+                    </div>
+                    <div className="col-md-6 right-box p-3">
+                        <div className="row align-items-center">
+                            <h2>你好！</h2>
+                            <p>歡迎回來！</p>
+                            <form onSubmit={handleSubmit} className='mt-1'>
+                                <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
+                                <label htmlFor="user" className='form-label'>帳號:</label>
+                                <input
+                                    className='form-control form-control-lg bg-light fs-6'
+                                    type="text"
+                                    id="user"
+                                    autoComplete="off"
+                                    onChange={(e) => setUser(e.target.value)}
+                                    value={user}
+                                    required
+                                />
 
-                        <label htmlFor="pwd">密碼:</label>
-                        <input
-                            type="password"
-                            id="pwd"
-                            onChange={(e) => setPwd(e.target.value)}
-                            value={pwd}
-                            required
-                        />
-                        <button>登入</button>
-                    </form>
-                    <p>
-                        尚未創建帳戶？<br />
-                        <span className="line">
-                            <Link to="/register">註冊</Link><br/>
-                            <Link to="/forgetPWD">忘記密碼</Link><br/>
-                            <Link to="/linkpage">連結頁面</Link>
-                        </span>
-                    </p>
-                </section>
+                                <label htmlFor="pwd" className='form-label'>密碼:</label>
+                                <input
+                                    className='form-control form-control-lg bg-light fs-6'
+                                    type="password"
+                                    id="pwd"
+                                    onChange={(e) => setPwd(e.target.value)}
+                                    value={pwd}
+                                    required
+                                />
+                                <Link to="/forgetPWD">忘記密碼？</Link>
+                                <button className="btn btn-primary w-100 fs-5">登入</button>
+                            </form>
+                            <div className="mt-2">
+                                <p>尚未創建帳戶？</p>
+                                <Link to="/register">註冊</Link><br/>
+                                <Link to="/linkpage">連結頁面</Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </Transition>
     )
 }
 

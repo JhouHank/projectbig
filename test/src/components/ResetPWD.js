@@ -28,10 +28,6 @@ const ResetPWD = () => {
         setErrMsg('');
     }, [pwd, matchPwd])
 
-    // useEffect(() => {
-    //     setErrMsg('');
-    // }, [pwd, matchPwd])
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         // if button enabled with JS hack
@@ -74,58 +70,60 @@ const ResetPWD = () => {
                     </p>
                 </section>
             ) : (
-                <section>
-                    <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
-                    <h1>重置密碼</h1>
-                    <form onSubmit={handleSubmit}>
-                        <label htmlFor="password">
-                            新密碼:
-                            <FontAwesomeIcon icon={faCheck} className={validPwd ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "hide" : "invalid"} />
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            onChange={(e) => setPwd(e.target.value)}
-                            value={pwd}
-                            required
-                            onFocus={() => setPwdFocus(true)}
-                            onBlur={() => setPwdFocus(false)}
-                        />
-                        <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            8至24個字元<br />
-                            必須包含至少一個小寫字母、大寫字母、一個數字<br />
-                            不允許特殊字符
-                        </p>
+                <div className="container text-center">
+                    <section>
+                        <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
+                        <h1>重置密碼</h1>
+                        <form onSubmit={handleSubmit}>
+                            <label htmlFor="password">
+                                新密碼:
+                                <FontAwesomeIcon icon={faCheck} className={validPwd ? "valid" : "hide"} />
+                                <FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "hide" : "invalid"} />
+                            </label>
+                            <input
+                                type="password"
+                                id="password"
+                                onChange={(e) => setPwd(e.target.value)}
+                                value={pwd}
+                                required
+                                onFocus={() => setPwdFocus(true)}
+                                onBlur={() => setPwdFocus(false)}
+                            />
+                            <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
+                                <FontAwesomeIcon icon={faInfoCircle} />
+                                8至24個字元<br />
+                                必須包含至少一個小寫字母、大寫字母、一個數字<br />
+                                不允許特殊字符
+                            </p>
 
-                        <label htmlFor="confirmPwd">
-                            確認新密碼:
-                            <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
-                        </label>
-                        <input
-                            type="password"
-                            id="confirmPwd"
-                            onChange={(e) => setMatchPwd(e.target.value)}
-                            value={matchPwd}
-                            required
-                            onFocus={() => setMatchFocus(true)}
-                            onBlur={() => setMatchFocus(false)}
-                        />
-                        <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            密碼必須與一致
+                            <label htmlFor="confirmPwd">
+                                確認新密碼:
+                                <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
+                                <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
+                            </label>
+                            <input
+                                type="password"
+                                id="confirmPwd"
+                                onChange={(e) => setMatchPwd(e.target.value)}
+                                value={matchPwd}
+                                required
+                                onFocus={() => setMatchFocus(true)}
+                                onBlur={() => setMatchFocus(false)}
+                            />
+                            <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
+                                <FontAwesomeIcon icon={faInfoCircle} />
+                                密碼必須與一致
+                            </p>
+                            <button disabled={ !validPwd || !validMatch ? true : false}>重置密碼</button>
+                        </form>
+                        <p>
+                            <span className="line">
+                                <Link to="/">登入</Link> <br/>
+                                <Link to="/linkpage">取消</Link>
+                            </span>
                         </p>
-                        <button disabled={ !validPwd || !validMatch ? true : false}>重置密碼</button>
-                    </form>
-                    <p>
-                        <span className="line">
-                            <Link to="/">登入</Link> <br/>
-                            <Link to="/linkpage">取消</Link>
-                        </span>
-                    </p>
-                </section>
+                    </section>
+                </div>
             )}
         </>
     )

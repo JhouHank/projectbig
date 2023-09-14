@@ -25,11 +25,12 @@ const Header = () => {
     }
 
     return (
-        <header>
-            <p className='header'>這是Header</p>
-            {success ? <button onClick={signOut}>登出</button> : <Link to="/login">登入</Link>}
+        <header className="bg-primary text-white text-center fs-1 mb-5 p-3">
+            {success ? <button className="btn btn-light w-25 fs-5" onClick={signOut}>登出</button> : <Link to="/login" className="btn btn-light w-25 fs-5">登入</Link>}
         </header>
     );
 }
 
 export default Header;
+
+// {success ? <button onClick={signOut}>登出</button> : <Link to="/login">登入</Link>}

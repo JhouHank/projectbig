@@ -44,36 +44,40 @@ const ForgetPWD = () => {
         }
     }
     return (
-        <section>
-            <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
-            <h1>忘記密碼</h1>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="user">驗證帳號:</label>
-                <input
-                    type="text"
-                    id="user"
-                    autoComplete="off"
-                    onChange={(e) => setUser(e.target.value)}
-                    value={user}
-                    required
-                />
+        <div className="container text-center">
+            <section>
+                <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
+                <h1>忘記密碼</h1>
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="user" className='form-label'>驗證帳號:</label>
+                    <input
+                        className='form-control form-control-lg bg-light fs-6'
+                        type="text"
+                        id="user"
+                        autoComplete="off"
+                        onChange={(e) => setUser(e.target.value)}
+                        value={user}
+                        required
+                    />
 
-                <label htmlFor="email">電子信箱:</label>
-                <input
-                    type="email"
-                    id="email"
-                    onChange={(e) => setEmail(e.target.value)}
-                    value={email}
-                    required
-                />
-                <button>傳送驗證信</button>
-            </form>
-            <div className="flexGrow">
-                <Link to="/linkpage">回到連結頁面</Link> <br/>
-                <Link to="/" replace>回到上一頁</Link>
-            </div>
-        </section>
-)
+                    <label htmlFor="email" className='form-label'>電子信箱:</label>
+                    <input
+                        className='form-control form-control-lg bg-light fs-6'
+                        type="email"
+                        id="email"
+                        onChange={(e) => setEmail(e.target.value)}
+                        value={email}
+                        required
+                    />
+                    <button className="btn btn-primary w-25 fs-5 mt-3">傳送驗證信</button>
+                </form>
+                <div className="flexGrow">
+                    <Link to="/linkpage">回到連結頁面</Link> <br/>
+                    <Link to="/" replace>回到上一頁</Link>
+                </div>
+            </section>
+        </div>
+    )
 }
 
 export default ForgetPWD;

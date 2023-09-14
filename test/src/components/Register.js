@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from '../api/axios';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import Transition from '../Transition';
 
 const USER_REGEX = /^[A-z][A-z0-9]{7,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,24}$/;
@@ -33,6 +34,7 @@ const Register = () => {
 
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
+
 
     useEffect(() => {
         setvalidUser(USER_REGEX.test(user));
@@ -98,133 +100,142 @@ const Register = () => {
         // 下面這個<>是 <React.Fragment> 的語法糖
         <>  
             {success ? (
-                <section>
-                    <h1>成功!</h1>
-                    <p>
-                    <Link to="/">登入</Link>
-                    </p>
-                </section>
+                <Transition>
+                    <section className="container d-flex justify-content-center align-items-center">
+                        <div className="row border rounded-5 p-3 bg-white shadow box-area">
+                            <h1>成功!</h1>
+                            <Link to="/">登入</Link>
+                        </div>
+                    </section>
+                </Transition>
             ) : (
-                <section>
-                    <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
-                    <h1>註冊</h1>
-                    <form onSubmit={handleSubmit}>
-                        <label htmlFor="user">
-                            帳號:
-                            <FontAwesomeIcon icon={faCheck} className={validUser ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validUser || !user ? "hide" : "invalid"} />
-                        </label>
-                        <input
-                            type="text"
-                            id="user"
-                            autoComplete="off"
-                            onChange={(e) => setUser(e.target.value)}
-                            value={user}
-                            required
-                            onFocus={() => setUserFocus(true)}
-                            onBlur={() => setUserFocus(false)}
-                        />
-                        <p id="uidnote" className={userFocus && !validUser ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            8至24個字元<br />
-                            必須以字母開頭（不區分大小寫）<br />
-                            允許字母和數字
-                        </p>
+                <Transition>
+                    <section className="container d-flex justify-content-center align-items-center">
+                        <div className="row border rounded-5 p-3 bg-white shadow box-area">
+                            <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
+                            <h1>註冊</h1>
+                            <form onSubmit={handleSubmit}>
+                                <label htmlFor="user" className="form-label">
+                                    帳號:
+                                    <FontAwesomeIcon icon={faCheck} className={validUser ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validUser || !user ? "hide" : "invalid"} />
+                                </label>
+                                <input
+                                    className="form-control"
+                                    type="text"
+                                    id="user"
+                                    autoComplete="off"
+                                    onChange={(e) => setUser(e.target.value)}
+                                    value={user}
+                                    required
+                                    onFocus={() => setUserFocus(true)}
+                                    onBlur={() => setUserFocus(false)}
+                                />
+                                <p id="uidnote" className={userFocus && !validUser ? "instructions" : "offscreen"}>
+                                    <FontAwesomeIcon icon={faInfoCircle} />
+                                    8至24個字元<br />
+                                    必須以字母開頭（不區分大小寫）<br />
+                                    允許字母和數字
+                                </p>
 
-                        <label htmlFor="password">
-                            密碼:
-                            <FontAwesomeIcon icon={faCheck} className={validPwd ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "hide" : "invalid"} />
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            onChange={(e) => setPwd(e.target.value)}
-                            value={pwd}
-                            required
-                            onFocus={() => setPwdFocus(true)}
-                            onBlur={() => setPwdFocus(false)}
-                        />
-                        <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            8至24個字元<br />
-                            必須包含至少一個小寫字母、大寫字母、一個數字<br />
-                            不允許特殊字符
-                        </p>
+                                <label htmlFor="password">
+                                    密碼:
+                                    <FontAwesomeIcon icon={faCheck} className={validPwd ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "hide" : "invalid"} />
+                                </label>
+                                <input
+                                    className="form-control"
+                                    type="password"
+                                    id="password"
+                                    onChange={(e) => setPwd(e.target.value)}
+                                    value={pwd}
+                                    required
+                                    onFocus={() => setPwdFocus(true)}
+                                    onBlur={() => setPwdFocus(false)}
+                                />
+                                <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
+                                    <FontAwesomeIcon icon={faInfoCircle} />
+                                    8至24個字元<br />
+                                    必須包含至少一個小寫字母、大寫字母、一個數字<br />
+                                    不允許特殊字符
+                                </p>
 
-                        <label htmlFor="email">
-                            電子郵件:
-                            <FontAwesomeIcon icon={faCheck} className={validEmail ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validEmail || !email ? "hide" : "invalid"} />
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            autoComplete="off"
-                            onChange={(e) => setEmail(e.target.value)}
-                            value={email}
-                            required
-                            onFocus={() => setEmailFocus(true)}
-                            onBlur={() => setEmailFocus(false)}
-                        />
-                        <p id="emailnote" className={emailFocus && !validEmail ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            必須包含用戶名、@ 符號和域名
-                        </p>
+                                <label htmlFor="email">
+                                    電子郵件:
+                                    <FontAwesomeIcon icon={faCheck} className={validEmail ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validEmail || !email ? "hide" : "invalid"} />
+                                </label>
+                                <input
+                                    className="form-control"
+                                    type="email"
+                                    id="email"
+                                    autoComplete="off"
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={email}
+                                    required
+                                    onFocus={() => setEmailFocus(true)}
+                                    onBlur={() => setEmailFocus(false)}
+                                />
+                                <p id="emailnote" className={emailFocus && !validEmail ? "instructions" : "offscreen"}>
+                                    <FontAwesomeIcon icon={faInfoCircle} />
+                                    必須包含用戶名、@ 符號和域名
+                                </p>
 
-                        <label htmlFor="phone">
-                            手機號碼:
-                            <FontAwesomeIcon icon={faCheck} className={validPhone ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validPhone || !phone ? "hide" : "invalid"} />
-                        </label>
-                        <input
-                            type="tel"
-                            id="phone"
-                            autoComplete="off"
-                            onChange={(e) => setPhone(e.target.value)}
-                            value={phone}
-                            required
-                            onFocus={() => setPhoneFocus(true)}
-                            onBlur={() => setPhoneFocus(false)}
-                        />
-                        <p id="phonenote" className={phoneFocus && !validPhone ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            必須以09開頭<br />
-                            長度為10個數字
-                        </p>
+                                <label htmlFor="phone">
+                                    手機號碼:
+                                    <FontAwesomeIcon icon={faCheck} className={validPhone ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validPhone || !phone ? "hide" : "invalid"} />
+                                </label>
+                                <input
+                                    className="form-control"
+                                    type="tel"
+                                    id="phone"
+                                    autoComplete="off"
+                                    onChange={(e) => setPhone(e.target.value)}
+                                    value={phone}
+                                    required
+                                    onFocus={() => setPhoneFocus(true)}
+                                    onBlur={() => setPhoneFocus(false)}
+                                />
+                                <p id="phonenote" className={phoneFocus && !validPhone ? "instructions" : "offscreen"}>
+                                    <FontAwesomeIcon icon={faInfoCircle} />
+                                    必須以09開頭<br />
+                                    長度為10個數字
+                                </p>
 
-                        <label htmlFor="confirmPwd">
-                            確認密碼:
-                            <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
-                            <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
-                        </label>
-                        <input
-                            type="password"
-                            id="confirmPwd"
-                            onChange={(e) => setMatchPwd(e.target.value)}
-                            value={matchPwd}
-                            required
-                            onFocus={() => setMatchFocus(true)}
-                            onBlur={() => setMatchFocus(false)}
-                        />
-                        <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
-                            <FontAwesomeIcon icon={faInfoCircle} />
-                            密碼必須與一致
-                        </p>
-
-                        <button disabled={!validUser || !validPwd || !validMatch || !validEmail || !validPhone ? true : false}>註冊</button>
-                    </form>
-                    <p>
-                        已經註冊了？<br />
-                        <span className="line">
-                            <Link to="/">登入</Link> <br/>
+                                <label htmlFor="confirmPwd">
+                                    確認密碼:
+                                    <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
+                                </label>
+                                <input
+                                    className="form-control"
+                                    type="password"
+                                    id="confirmPwd"
+                                    onChange={(e) => setMatchPwd(e.target.value)}
+                                    value={matchPwd}
+                                    required
+                                    onFocus={() => setMatchFocus(true)}
+                                    onBlur={() => setMatchFocus(false)}
+                                />
+                                <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
+                                    <FontAwesomeIcon icon={faInfoCircle} />
+                                    密碼必須與一致
+                                </p>
+                                <button
+                                    className="btn btn-primary w-100 fs-5 mt-3"
+                                    disabled={!validUser || !validPwd || !validMatch || !validEmail || !validPhone ? true : false}
+                                    >註冊</button>
+                            </form>
+                            <p>已經註冊了？</p>
+                            <Link to="/">登入</Link>
                             <Link to="/linkpage">取消</Link>
-                        </span>
-                    </p>
-                </section>
+                        </div>
+                    </section>
+                </Transition>
             )}
         </>
     )
 }
 
-export default Register
+export default  Register
