@@ -9,7 +9,6 @@ import LinkPage from './components/LinkPage';
 import RequireAuth from './components/RequireAuth';
 import Member from './components/Member';
 import ChangePWD from './components/ChangePWD';
-import ChangePhoto from './components/ChangePhoto';
 import ForgetPWD from './components/ForgetPWD';
 import ResetPWD from './components/ResetPWD';
 import { Routes, Route, useLocation } from 'react-router-dom';
@@ -33,21 +32,18 @@ function App() {
           <Route path="resetPWD/:user/:resetPWDToken" element={<ResetPWD />} />
 
           {/* 有權限的路由 */}
-          <Route element={<RequireAuth allowedRoles={1} />}>
+          <Route element={<RequireAuth allowedRoles={0} />}>
             <Route path="/" element={<Home />} />
           </Route>
 
-          <Route element={<RequireAuth allowedRoles={1} />}>
-            <Route path="/member/:user" element={<Member />} />
+          <Route element={<RequireAuth allowedRoles={0} />}>
+            <Route path="/member/:name" element={<Member />} />
           </Route>
-          <Route element={<RequireAuth allowedRoles={1} />}>
-            <Route path="/member/:user/changePWD" element={<ChangePWD />} />
-          </Route>
-          <Route element={<RequireAuth allowedRoles={1} />}>
-            <Route path="/member/changePhoto" element={<ChangePhoto />} />
+          <Route element={<RequireAuth allowedRoles={0} />}>
+            <Route path="/member/:name/changePWD" element={<ChangePWD />} />
           </Route>
 
-          <Route element={<RequireAuth allowedRoles={3} />}>
+          <Route element={<RequireAuth allowedRoles={1} />}>
             <Route path="admin" element={<Admin />} />
           </Route>
 

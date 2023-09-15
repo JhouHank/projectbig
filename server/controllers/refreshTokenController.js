@@ -11,7 +11,7 @@ const handleRefreshToken = (req, res) => {
     } 
     // 如果找到了refreshToken，接著在資料庫中尋找具有相同refreshToken的用戶。
     const refreshToken = cookies.jwt;
-    myDBconn.query('SELECT user,refreshtoken,roles FROM member WHERE refreshToken = ?', 
+    myDBconn.query('SELECT email,refreshtoken,roles FROM member WHERE refreshToken = ?', 
             [refreshToken],function(err, data){
                 if(err){
                     console.log("SQL指令執行錯誤=====");
@@ -26,15 +26,15 @@ const handleRefreshToken = (req, res) => {
                         refreshToken,
                         process.env.REFRESH_TOKEN_SECRET, // 也可以寫成data[0].refreshToken
                         (err, decoded) => {
-                            // 如果錯誤，或是解密出的user與資料庫中的user不相符，則返回403狀態碼
-                            if (err || data[0].user !== decoded.user){
+                            // 如果錯誤，或是解密出的email與資料庫中的email不相符，則返回403狀態碼
+                            if (err || data[0].email !== decoded.email){
                                 console.log("比對錯誤");
                                 return res.sendStatus(403);
                             } 
-                            // 如果refreshToken驗證成功，並且解密出的user與資料庫中的user相符，
+                            // 如果refreshToken驗證成功，並且解密出的email與資料庫中的email相符，
                             // 則會生成一個新的accessToken，並將其返回給用戶端。
                             const accessToken = jwt.sign(
-                                { "user": decoded.user,"roles":data[0].roles },
+                                { "email": decoded.email,"roles":data[0].roles },
                                 process.env.ACCESS_TOKEN_SECRET,
                                 { expiresIn: '30s' }
                             );

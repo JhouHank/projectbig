@@ -6,7 +6,7 @@ dotenv.config({ path:"../.env" });
 
 const handleResetPWD = (req, res) => {
     // 解構賦值
-    const { user, resetPWDToken } = req.body;
+    const { name, resetPWDToken } = req.body;
     // 先驗證resetPWDToken有沒有一樣
     jwt.verify(
         resetPWDToken,
@@ -18,15 +18,15 @@ const handleResetPWD = (req, res) => {
             } else {
                 //如果正確，進資料庫改密碼
                 req.body.pwd = await bcrypt.hash(req.body.pwd, 8); // 將密碼加密
-                myDBconn.query("UPDATE member SET pwd = ? WHERE user = ?"
-                ,[req.body.pwd, user]
+                myDBconn.query("UPDATE member SET pwd = ? WHERE name = ?"
+                ,[req.body.pwd, name]
                 , function(err, data){
                     if(err){
                         console.log("SQL指令執行錯誤=====");
                         console.log(err);
                     } else {
                         // 執行成功
-                        res.status(201).json({ 'success': `${user} reset password!` });
+                        res.status(201).json({ 'success': `${name} reset password!` });
                     }
                 });
             }

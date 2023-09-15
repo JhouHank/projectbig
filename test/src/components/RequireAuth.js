@@ -8,7 +8,7 @@ const RequireAuth = ({ allowedRoles }) => {
     if(auth.roles >= allowedRoles){
         // 如果符合權限要求 則進入主頁
         return <Outlet />
-    }else if(auth?.user){
+    }else if(auth?.email){
         // 不符合權限 轉到沒有權限的頁面
         return <Navigate to="/unauthorized" state={{ from: location }} replace />
     }else{

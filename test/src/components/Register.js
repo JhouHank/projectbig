@@ -5,16 +5,16 @@ import axios from '../api/axios';
 import { Link } from 'react-router-dom';
 import Transition from '../Transition';
 
-const USER_REGEX = /^[A-z][A-z0-9]{7,23}$/;
+const NAME_REGEX = /^[A-z][A-z0-9]{7,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,24}$/;
 const EMAIL_REGEX = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 const PHONE_REGEX = /^(09\d{8})$/;
 const REGISTER_URL = '/register';
 
 const Register = () => {
-    const [user, setUser] = useState('');
-    const [validUser, setvalidUser] = useState(false);
-    const [userFocus, setUserFocus] = useState(false);
+    const [name, setName] = useState('');
+    const [validName, setValidName] = useState(false);
+    const [nameFocus, setNameFocus] = useState(false);
 
     const [pwd, setPwd] = useState('');
     const [validPwd, setValidPwd] = useState(false);
@@ -37,8 +37,8 @@ const Register = () => {
 
 
     useEffect(() => {
-        setvalidUser(USER_REGEX.test(user));
-    }, [user])
+        setValidName(NAME_REGEX.test(name));
+    }, [name])
 
     useEffect(() => {
         setValidPwd(PWD_REGEX.test(pwd));
@@ -55,12 +55,12 @@ const Register = () => {
 
     useEffect(() => {
         setErrMsg('');
-    }, [user, pwd, email, phone, matchPwd])
+    }, [name, pwd, email, phone, matchPwd])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         // if button enabled with JS hack
-        const v1 = USER_REGEX.test(user);
+        const v1 = NAME_REGEX.test(name);
         const v2 = PWD_REGEX.test(pwd);
         const v3 = EMAIL_REGEX.test(email);
         const v4 = PHONE_REGEX.test(phone);
@@ -70,7 +70,7 @@ const Register = () => {
         }
         try {
             const response = await axios.post(REGISTER_URL,
-                JSON.stringify({ user, pwd , email, phone}),
+                JSON.stringify({ name, pwd , email, phone}),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
@@ -80,7 +80,7 @@ const Register = () => {
             // console.log(response?.accessToken);
             // console.log(JSON.stringify(response))
             setSuccess(true);
-            setUser('');
+            setName('');
             setPwd('');
             setEmail('');
             setPhone('');
@@ -115,27 +115,48 @@ const Register = () => {
                             <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
                             <h1>註冊</h1>
                             <form onSubmit={handleSubmit}>
-                                <label htmlFor="user" className="form-label">
-                                    帳號:
-                                    <FontAwesomeIcon icon={faCheck} className={validUser ? "valid" : "hide"} />
-                                    <FontAwesomeIcon icon={faTimes} className={validUser || !user ? "hide" : "invalid"} />
+                                <label htmlFor="name" className="form-label">
+                                    暱稱:
+                                    <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validName || !name ? "hide" : "invalid"} />
                                 </label>
                                 <input
                                     className="form-control"
                                     type="text"
-                                    id="user"
+                                    id="name"
                                     autoComplete="off"
-                                    onChange={(e) => setUser(e.target.value)}
-                                    value={user}
+                                    onChange={(e) => setName(e.target.value)}
+                                    value={name}
                                     required
-                                    onFocus={() => setUserFocus(true)}
-                                    onBlur={() => setUserFocus(false)}
+                                    onFocus={() => setNameFocus(true)}
+                                    onBlur={() => setNameFocus(false)}
                                 />
-                                <p id="uidnote" className={userFocus && !validUser ? "instructions" : "offscreen"}>
+                                <p id="uidnote" className={nameFocus && !validName ? "instructions" : "offscreen"}>
                                     <FontAwesomeIcon icon={faInfoCircle} />
                                     8至24個字元<br />
                                     必須以字母開頭（不區分大小寫）<br />
                                     允許字母和數字
+                                </p>
+
+                                <label htmlFor="email">
+                                    電子郵件:
+                                    <FontAwesomeIcon icon={faCheck} className={validEmail ? "valid" : "hide"} />
+                                    <FontAwesomeIcon icon={faTimes} className={validEmail || !email ? "hide" : "invalid"} />
+                                </label>
+                                <input
+                                    className="form-control"
+                                    type="email"
+                                    id="email"
+                                    autoComplete="off"
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={email}
+                                    required
+                                    onFocus={() => setEmailFocus(true)}
+                                    onBlur={() => setEmailFocus(false)}
+                                />
+                                <p id="emailnote" className={emailFocus && !validEmail ? "instructions" : "offscreen"}>
+                                    <FontAwesomeIcon icon={faInfoCircle} />
+                                    必須包含用戶名、@ 符號和域名
                                 </p>
 
                                 <label htmlFor="password">
@@ -158,27 +179,6 @@ const Register = () => {
                                     8至24個字元<br />
                                     必須包含至少一個小寫字母、大寫字母、一個數字<br />
                                     不允許特殊字符
-                                </p>
-
-                                <label htmlFor="email">
-                                    電子郵件:
-                                    <FontAwesomeIcon icon={faCheck} className={validEmail ? "valid" : "hide"} />
-                                    <FontAwesomeIcon icon={faTimes} className={validEmail || !email ? "hide" : "invalid"} />
-                                </label>
-                                <input
-                                    className="form-control"
-                                    type="email"
-                                    id="email"
-                                    autoComplete="off"
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    value={email}
-                                    required
-                                    onFocus={() => setEmailFocus(true)}
-                                    onBlur={() => setEmailFocus(false)}
-                                />
-                                <p id="emailnote" className={emailFocus && !validEmail ? "instructions" : "offscreen"}>
-                                    <FontAwesomeIcon icon={faInfoCircle} />
-                                    必須包含用戶名、@ 符號和域名
                                 </p>
 
                                 <label htmlFor="phone">
@@ -224,7 +224,7 @@ const Register = () => {
                                 </p>
                                 <button
                                     className="btn btn-primary w-100 fs-5 mt-3"
-                                    disabled={!validUser || !validPwd || !validMatch || !validEmail || !validPhone ? true : false}
+                                    disabled={!validName || !validPwd || !validMatch || !validEmail || !validPhone ? true : false}
                                     >註冊</button>
                             </form>
                             <p>已經註冊了？</p>

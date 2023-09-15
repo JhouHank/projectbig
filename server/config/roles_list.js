@@ -1,8 +1,7 @@
 // 權限的名單
 const ROLES_LIST = {
-    "Admin": 3,
-    "Editor": 2,
-    "User": 1
+    "Admin": 1,
+    "User": 0
 }
 
 module.exports = ROLES_LIST

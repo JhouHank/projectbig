@@ -10,10 +10,10 @@ const LinkPage = () => {
     const logout = useLogout();
 
     
-    // auth.user改變的時候會觸發裡面的判斷式
+    // auth.name改變的時候會觸發裡面的判斷式
     useEffect(() => {
-        auth.user ? setSuccess(true) : setSuccess(false);
-    }, [auth.user]); 
+        auth.name ? setSuccess(true) : setSuccess(false);
+    }, [auth.name]); 
 
     const signOut = async () => {
         await logout();

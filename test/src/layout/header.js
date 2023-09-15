@@ -14,9 +14,9 @@ const Header = () => {
     
     useEffect(() => {
         /* 下面是 componentDidMount */
-        auth.user ? setSuccess(true) : setSuccess(false);
+        auth.email ? setSuccess(true) : setSuccess(false);
         /* 上面是 componentDidMount */
-    }, [auth.user]); 
+    }, [auth.email]); 
 
 
     const signOut = async () => {
@@ -32,5 +32,3 @@ const Header = () => {
 }
 
 export default Header;
-
-// {success ? <button onClick={signOut}>登出</button> : <Link to="/login">登入</Link>}

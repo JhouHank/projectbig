@@ -12,9 +12,9 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,24}$/;
 const ChangePWD = () => {
     const { auth } = useAuth();
     const navigate = useNavigate();
-    const webUser = useParams().user;
+    const webName = useParams().name;
 
-    const [user, setUser] = useState('');
+    const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
 
     const [newPwd, setNewPwd] = useState('');
@@ -28,7 +28,7 @@ const ChangePWD = () => {
 
     useEffect(() => {
         setErrMsg('');
-    }, [user, pwd, newPwd])
+    }, [email, pwd, newPwd])
 
     useEffect(() => {
         setValidNewPwd(PWD_REGEX.test(newPwd));
@@ -44,14 +44,14 @@ const ChangePWD = () => {
 
         try {
             const response = await axios.post(CHANGEPWD_URL,
-                JSON.stringify({ webUser, user, pwd, newPwd }),
+                JSON.stringify({ webName, email, pwd, newPwd }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 }
             );
             console.log(JSON.stringify(response?.data));
-            setUser('');
+            setEmail('');
             setPwd('');
             setNewPwd('');
             signOut();
@@ -75,14 +75,14 @@ const ChangePWD = () => {
                 <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
                 <h1>修改密碼</h1>
                 <form onSubmit={handleSubmit}>
-                    <label htmlFor="user">驗證帳號:</label>
+                    <label htmlFor="email">驗證信箱:</label>
                     <input
                         className='form-control form-control-lg bg-light fs-6'
                         type="text"
-                        id="user"
+                        id="email"
                         autoComplete="off"
-                        onChange={(e) => setUser(e.target.value)}
-                        value={user}
+                        onChange={(e) => setEmail(e.target.value)}
+                        value={email}
                         required
                     />
                     <label htmlFor="oldpwd">驗證舊密碼:</label>
@@ -122,7 +122,7 @@ const ChangePWD = () => {
                 </form>
                 <p>
                     <span className="line">
-                    <Link to={`/member/${auth.user}`} >取消</Link>
+                    <Link to={`/member/${auth.name}`} >取消</Link>
                     </span>
                 </p>
             </section>

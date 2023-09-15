@@ -7,27 +7,27 @@ const FORGETPWD_URL = '/forgetPWD';
 const ForgetPWD = () => {
     const navigate = useNavigate();
 
-    const [user, setUser] = useState('');
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [errMsg, setErrMsg] = useState('');
 
     useEffect(() => {
         setErrMsg('');
-    }, [user, email])
+    }, [name, email])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
             const response = await axios.post(FORGETPWD_URL,
-                JSON.stringify({ user, email }),
+                JSON.stringify({ name, email }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 }
             );
             console.log(JSON.stringify(response?.data));
-            setUser('');
+            setName('');
             setEmail('');
             navigate("/login", {replace:true});
         } catch (err) {
@@ -49,14 +49,14 @@ const ForgetPWD = () => {
                 <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
                 <h1>忘記密碼</h1>
                 <form onSubmit={handleSubmit}>
-                    <label htmlFor="user" className='form-label'>驗證帳號:</label>
+                    <label htmlFor="name" className='form-label'>驗證帳號:</label>
                     <input
                         className='form-control form-control-lg bg-light fs-6'
                         type="text"
-                        id="user"
+                        id="name"
                         autoComplete="off"
-                        onChange={(e) => setUser(e.target.value)}
-                        value={user}
+                        onChange={(e) => setName(e.target.value)}
+                        value={name}
                         required
                     />
 

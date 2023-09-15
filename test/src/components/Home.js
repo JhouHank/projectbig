@@ -25,7 +25,7 @@ const Home = () => {
                     <br />
                     <Link to="/admin">後台？</Link>
                     <br />
-                    <Link to={`/member/${auth.user}`} >會員頁</Link>
+                    <Link to={`/member/${auth.name}`} >會員頁</Link>
                     <br />
                     <Link to="/linkpage">連結頁面</Link>
                     <div className="flexGrow">

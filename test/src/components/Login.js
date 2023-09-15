@@ -13,20 +13,20 @@ const Login = () => {
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
 
-    const [user, setUser] = useState('');
+    const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
 
     useEffect(() => {
         setErrMsg('');
-    }, [user, pwd])
+    }, [email, pwd])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
             const response = await axios.post(LOGIN_URL,
-                JSON.stringify({ user, pwd }),
+                JSON.stringify({ email, pwd }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
@@ -35,8 +35,8 @@ const Login = () => {
             // console.log(JSON.stringify(response?.data));
             const accessToken = response?.data?.accessToken;
             const roles = response?.data?.roles;
-            setAuth({ user, roles, accessToken });
-            setUser('');
+            setAuth({ email, roles, accessToken });
+            setEmail('');
             setPwd('');
             navigate(from, {replace:true});
         } catch (err) {
@@ -44,9 +44,9 @@ const Login = () => {
             if (!err?.response) {
                 setErrMsg('伺服器沒有回應');
             } else if (err.response?.status === 400) {
-                setErrMsg('使用者名稱或密碼不正確');
+                setErrMsg('信箱或密碼不正確');
             } else if (err.response?.status === 401) {
-                setErrMsg('無此帳號或密碼');
+                setErrMsg('無此信箱或密碼');
             } else {
                 setErrMsg('登入失敗');
             }
@@ -70,14 +70,14 @@ const Login = () => {
                             <p>歡迎回來！</p>
                             <form onSubmit={handleSubmit} className='mt-1'>
                                 <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
-                                <label htmlFor="user" className='form-label'>帳號:</label>
+                                <label htmlFor="email" className='form-label'>電子信箱:</label>
                                 <input
                                     className='form-control form-control-lg bg-light fs-6'
                                     type="text"
-                                    id="user"
+                                    id="email"
                                     autoComplete="off"
-                                    onChange={(e) => setUser(e.target.value)}
-                                    value={user}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={email}
                                     required
                                 />
 
