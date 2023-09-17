@@ -12,7 +12,7 @@ const handleRefreshToken = (req, res) => {
     // 如果找到了refreshToken，接著在資料庫中尋找具有相同refreshToken的用戶。
     const refreshToken = cookies.jwt;
     myDBconn.query('SELECT email,refreshtoken,roles FROM member WHERE refreshToken = ?', 
-            [refreshToken],function(err, data){
+            [refreshToken],async function(err, data){
                 if(err){
                     console.log("SQL指令執行錯誤=====");
                     console.log(err);
@@ -22,24 +22,25 @@ const handleRefreshToken = (req, res) => {
                 } else if(data.length > 0){
                     // 如果找到了用戶，接著使用 jwt.verify 函式來驗證refreshToken的有效性。
                     // 利用 jwt.verify() 解密驗證後會 callback 一個錯誤 err 與 payload
-                    jwt.verify(
+                    await jwt.verify(
                         refreshToken,
                         process.env.REFRESH_TOKEN_SECRET, // 也可以寫成data[0].refreshToken
                         (err, decoded) => {
+                            const roles = data[0].roles;
                             // 如果錯誤，或是解密出的email與資料庫中的email不相符，則返回403狀態碼
                             if (err || data[0].email !== decoded.email){
-                                console.log("比對錯誤");
+                                // console.log("比對錯誤");
                                 return res.sendStatus(403);
                             } 
                             // 如果refreshToken驗證成功，並且解密出的email與資料庫中的email相符，
                             // 則會生成一個新的accessToken，並將其返回給用戶端。
                             const accessToken = jwt.sign(
-                                { "email": decoded.email,"roles":data[0].roles },
+                                { "email": decoded.email,"roles":roles },
                                 process.env.ACCESS_TOKEN_SECRET,
-                                { expiresIn: '30s' }
+                                { expiresIn: '10s' }
                             );
                             // 將生成的 accessToken 回傳給用戶端
-                            res.json({ accessToken })
+                            res.json({ roles, accessToken })
                         }
                     );
                 }

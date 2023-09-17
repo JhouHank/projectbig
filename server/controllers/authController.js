@@ -37,13 +37,13 @@ const handleLogin = async (req, res) => {
                     const accessToken = jwt.sign(
                         { "email": email,"roles" : roles },
                         process.env.ACCESS_TOKEN_SECRET,
-                        { expiresIn: '30s' }
+                        { expiresIn: '10s' }
                     );
                     // 產生refreshToken
                     const refreshToken = jwt.sign(
                         { "email": email },
                         process.env.REFRESH_TOKEN_SECRET,
-                        { expiresIn: '1hr' }
+                        { expiresIn: '8hr' }
                     );
                     // 第一個參數為 Payload 用來儲存包含各種有關用戶或其他相關資訊的數據。
                     // 第二個參數為 Signature 是個字串型態的簽署金鑰，這是用於對 JWT 進行簽名的密鑰。簽名是一種保護 JWT 不被篡改的方式。

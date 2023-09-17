@@ -34,12 +34,18 @@
 }
 
 .errmsg {
+    text-align: center;
     background-color: lightpink;
     color: firebrick;
     font-weight: bold;
-    margin-bottom: 0;
+    margin:0 auto;
+    width: 50%;
 }
 
 .line {
     display: inline-block;
+}
+
+.w-screen{
+    width: 70%;
 }

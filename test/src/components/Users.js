@@ -30,24 +30,22 @@ const Users = () => {
         getUsers();
 
         return () => {
-            // 設置為 false 代表組件已經卸載。
             isMounted = false;
-            // 檢查 isMounted 是否為 true，如果是 true，則執行 controller.abort()。
-            // 這個條件語句確保只有在組件卸載時才會執行 controller.abort()。
-            isMounted && controller.abort()
-        }
+            controller.abort();
+        };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
         <div className="container">
             <article>
-                <h2>使用者列表</h2>
+                <h2>管理員列表</h2>
                 {users?.length
                     ? (
                             <ul className="list-unstyled">
                                 {users.map((user, i) => <li key={i}>{user}</li>)}
                             </ul>
-                    ) : <p>無使用者</p>
+                    ) : <p>無管理員</p>
                 }
             </article>
         </div>

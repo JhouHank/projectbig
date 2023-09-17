@@ -110,10 +110,10 @@ const Register = () => {
                 </Transition>
             ) : (
                 <Transition>
-                    <section className="container d-flex justify-content-center align-items-center">
-                        <div className="row border rounded-5 p-3 bg-white shadow box-area">
+                    <section className="container d-flex justify-content-center align-items-center vh-100">
+                        <div className="row border rounded-5 p-3 bg-white shadow box-area w-screen">
+                            <h1 className="text-center">註冊</h1>
                             <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
-                            <h1>註冊</h1>
                             <form onSubmit={handleSubmit}>
                                 <label htmlFor="name" className="form-label">
                                     暱稱:
@@ -133,9 +133,7 @@ const Register = () => {
                                 />
                                 <p id="uidnote" className={nameFocus && !validName ? "instructions" : "offscreen"}>
                                     <FontAwesomeIcon icon={faInfoCircle} />
-                                    8至24個字元<br />
-                                    必須以字母開頭（不區分大小寫）<br />
-                                    允許字母和數字
+                                    8至24個字元、必須以字母開頭（不區分大小寫）、允許字母和數字
                                 </p>
 
                                 <label htmlFor="email">
@@ -176,9 +174,7 @@ const Register = () => {
                                 />
                                 <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
                                     <FontAwesomeIcon icon={faInfoCircle} />
-                                    8至24個字元<br />
-                                    必須包含至少一個小寫字母、大寫字母、一個數字<br />
-                                    不允許特殊字符
+                                    8至24個字元、必須包含至少一個小寫字母、大寫字母、一個數字、不允許特殊字符
                                 </p>
 
                                 <label htmlFor="phone">
@@ -199,8 +195,7 @@ const Register = () => {
                                 />
                                 <p id="phonenote" className={phoneFocus && !validPhone ? "instructions" : "offscreen"}>
                                     <FontAwesomeIcon icon={faInfoCircle} />
-                                    必須以09開頭<br />
-                                    長度為10個數字
+                                    必須以09開頭、長度為10個數字
                                 </p>
 
                                 <label htmlFor="confirmPwd">
@@ -228,8 +223,7 @@ const Register = () => {
                                     >註冊</button>
                             </form>
                             <p>已經註冊了？</p>
-                            <Link to="/">登入</Link>
-                            <Link to="/linkpage">取消</Link>
+                            <Link to="/login">登入</Link>
                         </div>
                     </section>
                 </Transition>

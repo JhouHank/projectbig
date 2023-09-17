@@ -47,6 +47,11 @@ app.use('/forgetPWD', require('./routes/forgetPWD'));
 app.use('/resetPWD', require('./routes/resetPWD'));
 app.use('/logout', require('./routes/logout'));
 
+app.use('/member', require('./routes/member'));
+app.use('/order', require('./routes/order'));
+app.use('/products', require('./routes/products'));
+
+
 app.use(verifyJWT);
 app.use('/users', require('./routes/api/users'));
 // 未實現功能的路由
