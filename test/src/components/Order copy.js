@@ -8,14 +8,13 @@ import axios from '../api/axios';
 import Transition from '../Transition';
 
 
-
 const Order = () => {
-    // 顯示訂單資料 用空陣列接json
     const [orders, setOrders] = useState([]);
-    // 如果沒有訂單的狀態
     const [noOrders, setNoOrders] = useState(false);
-    // 網址的id
     const id = useParams()._id;
+    // 翻頁功能
+    const [currentPage, setCurrentPage] = useState(1);
+    const [ordersPerPage] = useState(15);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -28,6 +27,7 @@ const Order = () => {
                     }
                 );
                 // console.log(response.data);
+                // setOrders(response.data);
                 if (response.data === 0) {
                     // 如果後端返回0，表示該用戶未下訂單
                     setNoOrders(true);
@@ -43,7 +43,6 @@ const Order = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
-    // 把訂單的時間更改顯示方式
     const formatDateTime = (dateTimeString) => {
         const options = {
             year: 'numeric',
@@ -58,7 +57,6 @@ const Order = () => {
         return formattedDate;
     };
 
-    // 把訂單內容依照name提取出來
     const renderProductNames = (orderItems) => {
         // 解析order.order_items的字串為JavaScript對象
         const orderItemsArray = JSON.parse(orderItems);
@@ -77,9 +75,24 @@ const Order = () => {
         return productNamesString
     };
 
+    // 紀錄頁數
+    const indexOfLastOrder = currentPage * ordersPerPage;
+    const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+    const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
     return (
         <Transition>
             <div className="container text-center p-3 border rounded-3 bg-white mt-3">
+            <div className="pagination btn-group w-50 my-2 ms-auto">
+                {Array.from({ length: Math.ceil(orders.length / ordersPerPage) }).map((_, index) => (
+                    <button key={index} onClick={() => paginate(index + 1)} className="btn btn-warning">
+                        {index + 1}
+                    </button>
+                ))}
+                </div>
             {noOrders ? ( // 如果沒有訂單，顯示此人未下訂單的訊息
                 <p>這個會員尚未下單！</p>
             ) : (
@@ -97,7 +110,7 @@ const Order = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {orders.map((order, index) => (
+                        {currentOrders.map((order, index) => (
                             <tr key={index}>
                                 <td>{order.id}</td>
                                 <td>{order.user_id}</td>

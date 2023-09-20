@@ -8,15 +8,18 @@ import RequireAuth from './components/RequireAuth';
 import PersistLogin from './components/PersistLogin';
 import Member from './components/Member';
 import Order from './components/Order';
+import NewProduct from './components/NewProduct';
 import ForgetPWD from './components/ForgetPWD';
 import ResetPWD from './components/ResetPWD';
 import Layout from './layout/Layout';
+
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import Products from './components/Products';
 
 function App() {
   const location = useLocation();
+
   return (
     <AnimatePresence mode='wait'>
       <Routes key={location.pathname} location={location}>
@@ -37,9 +40,15 @@ function App() {
             <Route element={<RequireAuth allowedRoles={1} />}>
               <Route path="member" element={<Member />} />
             </Route>
+
             <Route element={<RequireAuth allowedRoles={1} />}>
               <Route path="products" element={<Products />} />
             </Route>
+
+            <Route element={<RequireAuth allowedRoles={1} />}>
+              <Route path="products/new" element={<NewProduct />} />
+            </Route>
+
             <Route element={<RequireAuth allowedRoles={1} />}>
               <Route path="/orders/:_id" element={<Order />} />
             </Route>

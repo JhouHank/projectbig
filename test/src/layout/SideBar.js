@@ -14,7 +14,7 @@ function SideBar() {
             <div>
                 <Link to="/" className='p-3 text-white'>
                     <i className='bi bi-code-slash'></i>
-                    <span className='fs-4'>拾月粿</span>
+                    <span className='fs-4'>拾月菓</span>
                 </Link>
                 <hr className='text-white mt-2'/>
                 <ul className='nav nav-pills flex-column mt-3'>
@@ -36,12 +36,12 @@ function SideBar() {
                             <span className='fs-4'>產品</span>
                         </Link>
                     </li>
-                    <li className={location.pathname ==='/orders' ? 'active nav-item p-1':'nav-item p-1'}>
+                    {/* <li className={location.pathname ==='/orders' ? 'active nav-item p-1':'nav-item p-1'}>
                         <Link to="/orders" className='p-1 text-white d-block'>
                             <FontAwesomeIcon icon={faBook} className='me-3 fs-5'/>
-                            <span className='fs-4'>訂單</span>
+                            <span className='fs-4'>下架產品</span>
                         </Link>
-                    </li>
+                    </li> */}
                 </ul>
             </div>
             <div>

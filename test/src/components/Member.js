@@ -40,7 +40,7 @@ const Member = () => {
         setEditedMember({ ...member });
     };
 
-    // 處理編輯框的value
+    // 處理編輯框modal的value
     const handleInput = (e) => {
         // name是要編輯的欄位名稱，value是該欄位的值
         const { name, value } = e.target;

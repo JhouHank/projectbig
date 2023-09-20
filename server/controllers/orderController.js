@@ -15,7 +15,7 @@ const handleAllOrder =  async (req, res) => {
 }
 
 const handleOrderByID =  async (req, res) => {
-    myDBconn.query('SELECT * FROM orders where user_id = ?',[req.body.id],
+    myDBconn.query('SELECT * FROM orders where user_id = ? ORDER BY created_at DESC;',[req.body.id],
     async function(err, data){
         if(err){
             console.log("SQL指令執行錯誤=====");

@@ -1,10 +1,11 @@
 import React from 'react'
 import { Link,useNavigate } from 'react-router-dom';
 import useLogout from "../hooks/useLogout";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
 
-function Navbar() {
+function Navbar({Toggle}) {
     const navigate = useNavigate();
     const logout = useLogout();
 
@@ -15,10 +16,10 @@ function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark d-flex">
             <div className="container-fluid">
-                <Link to="/" className="navbar-brand d-none d-md-block" >儀錶板</Link>
-                <Link to="/" className="navbar-brand d-block d-md-none" >
-                    <i className='bi bi-justify'></i>
-                </Link>
+                <span to="/" className="navbar-brand d-none d-md-block" >儀錶板</span>
+                <span to="/" className="navbar-brand d-block d-md-none" onClick={Toggle} >
+                    <FontAwesomeIcon icon={faBars} />
+                </span>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>

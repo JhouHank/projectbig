@@ -21,29 +21,30 @@ const getAllEmail = async (req, res) => {
     })
 }
 
-
 // 未實現的功能
-// const deleteemail = async (req, res) => {
-//     if (!req?.body?.id) return res.status(400).json({ "message": 'email ID required' });
-//     const email = await email.findOne({ _id: req.body.id }).exec();
-//     if (!email) {
-//         return res.status(204).json({ 'message': `email ID ${req.body.id} not found` });
-//     }
-//     const result = await email.deleteOne({ _id: req.body.id });
-//     res.json(result);
-// }
+const getEmail = async (req, res) => {
+    if (!req?.params?.id) return res.status(400).json({ "message": 'email ID required' });
+    const email = await email.findOne({ _id: req.params.id }).exec();
+    if (!email) {
+        return res.status(204).json({ 'message': `email ID ${req.params.id} not found` });
+    }
+    res.json(email);
+}
 
-// const getemail = async (req, res) => {
-//     if (!req?.params?.id) return res.status(400).json({ "message": 'email ID required' });
-//     const email = await email.findOne({ _id: req.params.id }).exec();
-//     if (!email) {
-//         return res.status(204).json({ 'message': `email ID ${req.params.id} not found` });
-//     }
-//     res.json(email);
-// }
+const deleteEmail = async (req, res) => {
+    if (!req?.body?.id) return res.status(400).json({ "message": 'email ID required' });
+    const email = await email.findOne({ _id: req.body.id }).exec();
+    if (!email) {
+        return res.status(204).json({ 'message': `email ID ${req.body.id} not found` });
+    }
+    const result = await email.deleteOne({ _id: req.body.id });
+    res.json(result);
+}
+
+
 
 module.exports = {
     getAllEmail,
-    // deleteemail,
-    // getemail
+    deleteEmail,
+    getEmail
 }

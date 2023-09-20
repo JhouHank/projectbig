@@ -74,8 +74,8 @@ function LineChart() {
         datasets:[
             {
                 label:"訂單量",
-                backgroundColor:"rgb(255, 99, 132)",
-                borderColor:"rgb(255, 99, 132)",
+                backgroundColor:"rgb(0, 99, 132)",
+                borderColor:"rgb(0, 99, 132)",
                 data:resultArray
             }
         ],

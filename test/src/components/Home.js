@@ -68,7 +68,7 @@ const Home = () => {
     }, 0); // 0 是初始的 total 值
 
     // 數字動畫(已經包裝成組件了)
-    const Counter = ({ from, to, duration }) => {
+    const Counter = ({ from, to, duration}) => {
         const count = useMotionValue(from);
         const rounded = useTransform(count, (latest) => Math.round(latest));
         useEffect(() => {
@@ -76,7 +76,7 @@ const Home = () => {
             return controls.stop;
         // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
-        return <motion.h2>{rounded}</motion.h2>;
+        return <motion.h2 className='mb-0'>{rounded}</motion.h2>;
     };
 
     return (
@@ -89,7 +89,10 @@ const Home = () => {
                                 <FontAwesomeIcon icon={faSackDollar} className='fs-1 text-success'/>
                                 <div className='text-center'>
                                     <p>營收</p>
-                                    <Counter from={0} to={totalPaidAmount} duration={1.5} />
+                                    <div className='d-flex'>
+                                        <Counter from={0} to={totalPaidAmount} duration={1.5}/>
+                                        <span className='ms-1 align-self-center'>元</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -98,7 +101,10 @@ const Home = () => {
                                 <FontAwesomeIcon icon={faCartShopping} className='fs-1 text-info'/>
                                 <div className='text-center'>
                                     <p>已付款</p>
-                                    <Counter from={0} to={isPaid} duration={1.5} />
+                                    <div className='d-flex'>
+                                        <Counter from={0} to={isPaid} duration={1.5} />
+                                        <span className='ms-1 align-self-center'>筆</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -106,8 +112,11 @@ const Home = () => {
                             <div className="d-flex justify-content-around p-4 align-items-center bg-white border border-secondary shadow-sm rounded-3 shadow">
                                 <FontAwesomeIcon icon={faArrowTrendDown} className='fs-1 text-danger'/>
                                 <div className='text-center'>
-                                    <p>庫存低於20</p>
-                                    <Counter from={0} to={lowInStock} duration={1.5} />
+                                    <p>庫存過低</p>
+                                    <div className='d-flex'>
+                                        <Counter from={0} to={lowInStock} duration={1.5} />
+                                        <span className='ms-1 align-self-center'>款</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -116,7 +125,10 @@ const Home = () => {
                                 <FontAwesomeIcon icon={faReceipt} className='fs-1 text-warning'/>
                                 <div className='text-center'>
                                     <p>訂單總價</p>
-                                    <Counter from={0} to={totalPrices} duration={1.5} />
+                                    <div className='d-flex'>
+                                        <Counter from={0} to={totalPrices} duration={1.5} />
+                                        <span className='ms-1 align-self-center'>元</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
