@@ -2,7 +2,7 @@ const myDBconn = require('../config/db');
 
 const getAllEmail = async (req, res) => {
     // 找全部用戶
-    myDBconn.query('select email,pwd from member',async function(err, results){
+    myDBconn.query('select id,name,email,phone,roles from member',async function(err, results){
         if(err){
             console.log("SQL指令執行錯誤=====");
             console.log(err);
@@ -12,11 +12,7 @@ const getAllEmail = async (req, res) => {
             return res.status(204).json({ 'message': 'No email found' });
         } else if (results.length > 0){
             // 把全部用戶回傳
-            let emails = []
-            for(let i = 0; i < results.length; i++){
-                emails.push(results[i].email);
-            }
-            res.json(emails);
+            res.json(results);
         }
     })
 }

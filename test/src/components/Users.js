@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router-dom";
+import Transition from '../Transition';
+
 
 const Users = () => {
-    const [users, setUsers] = useState();
+    const [users, setUsers] = useState([]);
     const axiosPrivate = useAxiosPrivate();
     const navigate = useNavigate();
     const location = useLocation();
@@ -37,18 +39,40 @@ const Users = () => {
     }, [])
 
     return (
+        <Transition>
+
         <div className="container">
             <article>
+                <div className="px-4 border rounded-3 bg-white mt-3">
                 <h2>管理員列表</h2>
-                {users?.length
-                    ? (
-                            <ul className="list-unstyled">
-                                {users.map((user, i) => <li key={i}>{user}</li>)}
-                            </ul>
-                    ) : <p>無管理員</p>
-                }
+                <div className="row">
+                    <table className="col table table-striped table-hover text-center">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>暱稱</th>
+                                <th>電子信箱</th>
+                                <th>電話</th>
+                                <th>權限</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {users.map((user, index) => (
+                                <tr key={index}>
+                                    <td className="align-middle">{user.id}</td>
+                                    <td className="align-middle">{user.name}</td>
+                                    <td className="align-middle">{user.email}</td>
+                                    <td className="align-middle">{user.phone}</td>
+                                    <td className="align-middle">{user.roles ? "管理員" : "員工"}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             </article>
         </div>
+        </Transition>
     );
 };
 

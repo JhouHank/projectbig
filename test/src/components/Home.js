@@ -2,28 +2,33 @@ import Transition from '../Transition';
 import LineChart from "./LineChart";
 import PieChart from "./PieChart";
 import { useState, useEffect } from "react";
-import axios from "../api/axios";
-import {motion, useMotionValue, useTransform, animate}  from 'framer-motion';
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { motion, useMotionValue, useTransform, animate }  from 'framer-motion';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSackDollar, faCartShopping, faArrowTrendDown, faReceipt } from '@fortawesome/free-solid-svg-icons';
 
 const Home = () => {
     const [orders, setOrders] = useState([]);
     const [products, setProducts] = useState([]);
+    const axiosPrivate = useAxiosPrivate();
 
     // 抓訂單及商品資料
     useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
         // 訂單
         const fetchOrderData = async () => {
             try {
-                const response = await axios.post("/order",
+                const response = await axiosPrivate.post("/order",
                     {
                         headers: { 'Content-Type': 'application/json' },
-                        withCredentials: true
+                        withCredentials: true,
+                        signal: controller.signal
                     }
                 );
                 // console.log(response.data.length);
-                setOrders(response.data);
+                isMounted && setOrders(response.data);
             } catch (err) {
                 console.log(err);
             }
@@ -31,14 +36,15 @@ const Home = () => {
         // 商品
         const fetchProductData = async () => {
             try {
-                const response = await axios.post("/products",
+                const response = await axiosPrivate.post("/products",
                     {
                         headers: { 'Content-Type': 'application/json' },
-                        withCredentials: true
+                        withCredentials: true,
+                        signal: controller.signal
                     }
                 );
                 // console.log(response.data.length);
-                setProducts(response.data);
+                isMounted && setProducts(response.data);
             } catch (err) {
                 console.log(err);
             }
@@ -46,6 +52,11 @@ const Home = () => {
         // 抓資料
         fetchOrderData();
         fetchProductData();
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 

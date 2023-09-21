@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom"
 import { useState, useEffect } from "react";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import Transition from '../Transition';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
+import Swal from 'sweetalert2';
+
 
 function Products() {
     // 顯示商品資料 用空陣列接json
@@ -12,26 +15,38 @@ function Products() {
     // 翻頁功能
     const [currentPage, setCurrentPage] = useState(1);
     const [productsPerPage] = useState(10);
+    // ???
+    const axiosPrivate = useAxiosPrivate();
+
 
     // 在第一次渲染時抓產品資料
     useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
         const fetchData = async () => {
             try {
-                const response = await axios.post("/products",
+                const response = await axiosPrivate.post("/products",
                     JSON.stringify({ }),
                     {
                         headers: { 'Content-Type': 'application/json' },
-                        withCredentials: true
+                        withCredentials: true,
+                        signal: controller.signal
                     }
                 );
                 // console.log(response.data);
-                setProducts(response.data);
+                isMounted && setProducts(response.data);
             } catch (err) {
                 console.log(err);
             }
         };
 
         fetchData();
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
@@ -74,14 +89,13 @@ function Products() {
     }
     //
 
-    // 按下編輯按鈕後，把products的資料送到modal
+    // 按下上下架按鈕後，把products的資料送到modal
     // 這裡的products是tbody裡面那個currentProducts陣列的products
     const handleOnSaleClick = (products) => {
         setEditedProducts({ ...products });
     };
 
-
-    // 確認上下架按鈕
+    // 按下(上下架)的modal的確認按鈕
     const handleConfirmOnSale = async(e) =>{
         e.preventDefault();
         try {
@@ -104,6 +118,41 @@ function Products() {
             console.log(err);
         }
     }
+
+    // 按下刪除按鈕後，把products的資料送到modal
+    // 這裡的products是tbody裡面那個currentProducts陣列的products
+    const handleDeleteClick = (products) => {
+        setEditedProducts({ ...products });
+    };
+
+        // 按下(上下架)的modal的確認按鈕
+        const handleConfirmDelete = async(e) =>{
+            e.preventDefault();
+            try {
+                const response = await axios.delete("/products",
+                // delete的資料傳送形式要跟其他的不一樣
+                {
+                    data:JSON.stringify({ editedProducts }),
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                });
+                console.log(response.data);
+                Swal.fire({
+                    position: 'top',
+                    icon: 'success',
+                    title: '刪除成功！',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    allowOutsideClick:false
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
 
     // 紀錄頁數
     const indexOfLastProduct = currentPage * productsPerPage;
@@ -149,18 +198,18 @@ function Products() {
                         <tbody>
                             {currentProducts.map((products, index) => (
                             // {products.map((products, index) => (
-                                <tr key={index}>
-                                    <td className="align-middle">{products._id}</td>
-                                    <td className="align-middle">{products.name}</td>
-                                    <td className="align-middle">{products.slug}</td>
-                                    <td className="align-middle">{products.category}</td>
-                                    <td className="align-middle">
+                                <tr className="align-middle" key={index}>
+                                    <td>{products._id}</td>
+                                    <td>{products.name}</td>
+                                    <td>{products.slug}</td>
+                                    <td>{products.category}</td>
+                                    <td>
                                         <img src={`http://localhost:8000${products.image}`} alt={products.name} style={{ maxWidth: '50px' }} />
                                     </td>
-                                    <td className="align-middle">{products.price}</td>
-                                    <td className="align-middle">{products.countInStock}</td>
-                                    <td className="align-middle">{products.numReviews}</td>
-                                    <td className="align-middle">{products.rating}</td>
+                                    <td>{products.price}</td>
+                                    <td>{products.countInStock}</td>
+                                    <td>{products.numReviews}</td>
+                                    <td>{products.rating}</td>
                                     <td>
                                         <button 
                                         type="button" 
@@ -185,16 +234,15 @@ function Products() {
                                         </button>
                                     </td>
                                     <td>
-                                        {/* <button 
+                                        <button 
                                         type="button" 
                                         className="btn btn-danger" 
                                         data-bs-toggle="modal" 
-                                        data-bs-target="#edit"
-                                        // onClick={() => handleEditClick(products)}
+                                        data-bs-target="#delete"
+                                        onClick={() => handleDeleteClick(products)}
                                         >
                                             刪除
-                                        </button> */}
-                                        <p>123</p>
+                                        </button>
                                     </td>
                                 </tr>
                             ))}
@@ -270,6 +318,35 @@ function Products() {
                     </div>
                     <div className="modal-footer">
                         <input type="submit" value="確認" className="btn btn-success" data-bs-dismiss="modal" onClick={handleConfirmOnSale}/>
+                        <button type="button"  className="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            </>
+            {/*  下面開始是刪除的modal */}
+            <>
+            <div className="modal fade" id="delete" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="deleteLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id="deleteLabel">上下架商品</h5>
+                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    {editedProducts && (
+                        <div className="modal-body d-flex flex-column justify-content-center w-modal mx-auto list-unstyled gap-2 border-0">
+                            <p>ID： {editedProducts._id}</p>
+                            <p>名稱： {editedProducts.name}</p>
+                            <p>slug： {editedProducts.slug}</p>
+                            <p>種類： {editedProducts.category}</p>
+                            <p>價格： {editedProducts.price}</p>
+                            <p>庫存： {editedProducts.countInStock}</p>
+                            <p>當前銷售狀況： {editedProducts.onSale ? "正在銷售" : "下架中"}</p>
+                            <p className="text-danger text-center bg-light">確認刪除？</p>
+                        </div>
+                    )}
+                    <div className="modal-footer">
+                        <input type="submit" value="確認" className="btn btn-success" data-bs-dismiss="modal" onClick={handleConfirmDelete}/>
                         <button type="button"  className="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                     </div>
                     </div>

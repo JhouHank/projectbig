@@ -9,7 +9,7 @@ const RESETPWD_URL = '/resetPWD/';
 
 const ResetPWD = () => {
     const param = useParams();
-    const {user, resetPWDToken} = param;
+    const {email, resetPWDToken} = param;
 
     const [pwd, setPwd] = useState('');
     const [validPwd, setValidPwd] = useState(false);
@@ -38,7 +38,7 @@ const ResetPWD = () => {
         }
         try {
             const response = await axios.post(RESETPWD_URL,
-                JSON.stringify({ user, pwd, resetPWDToken }),
+                JSON.stringify({ email, pwd, resetPWDToken }),
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
@@ -63,24 +63,25 @@ const ResetPWD = () => {
         // 下面這個<>是 <React.Fragment> 的語法糖
         <>  
             {success ? (
-                <section>
-                    <h1>重置成功!</h1>
-                    <p>
-                    <Link to="/">登入</Link>
-                    </p>
+                <section className="container d-flex justify-content-center align-items-center vh-100">
+                    <div className="text-center">
+                        <h2>重置成功!</h2>
+                        <Link className="btn btn-primary fs-5 mt-2" to="/">登入</Link>
+                    </div>
                 </section>
             ) : (
-                <div className="container text-center">
+                <div className="container d-flex justify-content-center align-items-center vh-100 w-25">
                     <section>
                         <p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
                         <h1>重置密碼</h1>
                         <form onSubmit={handleSubmit}>
-                            <label htmlFor="password">
+                            <label htmlFor="password" className="form-label">
                                 新密碼:
                                 <FontAwesomeIcon icon={faCheck} className={validPwd ? "valid" : "hide"} />
                                 <FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "hide" : "invalid"} />
                             </label>
                             <input
+                                className="form-control"
                                 type="password"
                                 id="password"
                                 onChange={(e) => setPwd(e.target.value)}
@@ -96,12 +97,13 @@ const ResetPWD = () => {
                                 不允許特殊字符
                             </p>
 
-                            <label htmlFor="confirmPwd">
+                            <label htmlFor="confirmPwd" className="form-label">
                                 確認新密碼:
                                 <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
                                 <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
                             </label>
                             <input
+                                className="form-control"
                                 type="password"
                                 id="confirmPwd"
                                 onChange={(e) => setMatchPwd(e.target.value)}
@@ -114,14 +116,12 @@ const ResetPWD = () => {
                                 <FontAwesomeIcon icon={faInfoCircle} />
                                 密碼必須與一致
                             </p>
-                            <button disabled={ !validPwd || !validMatch ? true : false}>重置密碼</button>
+                            <button className="btn btn-primary fs-5 mt-2 w-100" disabled={ !validPwd || !validMatch ? true : false}>重置密碼</button>
+                            <div className='d-flex justify-content-between'>
+                                <Link to="/" className="btn btn-primary fs-5 mt-2">登入</Link> <br/>
+                                <Link to="/" className="btn btn-primary fs-5 mt-2" replace>回到上一頁</Link>
+                            </div>
                         </form>
-                        <p>
-                            <span className="line">
-                                <Link to="/">登入</Link> <br/>
-                                <Link to="/linkpage">取消</Link>
-                            </span>
-                        </p>
                     </section>
                 </div>
             )}

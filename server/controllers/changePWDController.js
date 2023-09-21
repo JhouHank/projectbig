@@ -33,7 +33,7 @@ const handleChangePWD = async (req, res) => {
                             console.log(err);
                         } else {
                             // 執行成功
-                            res.status(201).json({ 'success': `${req.body.email}密碼更改成功！` });
+                            res.status(201).json({ 'success': `${req.body.email} 密碼更改成功！` });
                         }
                     });
                 } else {

@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom"
 import { useState, useEffect } from "react";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import Transition from '../Transition';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
+import Swal from 'sweetalert2';
+
 
 
 const Member = () => {
@@ -10,27 +13,36 @@ const Member = () => {
     const [members, setMembers] = useState([]);
     // 編輯會員資料
     const [editedMember, setEditedMember] = useState(null);
-    // 刪除會員資料
-    // const [deleteMember, setDeleteMember] = useState(null);
+
+    const axiosPrivate = useAxiosPrivate();
 
     // 在第一次渲染時抓會員資料
     useEffect(() => {
+        let isMounted = true;
+        const controller = new AbortController();
+
         const fetchData = async () => {
             try {
-                const response = await axios.post("/member",
+                const response = await axiosPrivate.post("/member",
                     {
                         headers: { 'Content-Type': 'application/json' },
-                        withCredentials: true
+                        withCredentials: true,
+                        signal: controller.signal
                     }
                 );
                 // console.log(response.data);
-                setMembers(response.data);
+                isMounted && setMembers(response.data);
             } catch (err) {
                 console.log(err);
             }
         };
 
         fetchData();
+
+        return () => {
+            isMounted = false;
+            controller.abort();
+        };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
@@ -74,6 +86,40 @@ const Member = () => {
         }
     }
 
+    // 按下刪除按鈕後，把member的資料送到modal
+    // 這裡的member是tbody裡面那個members陣列的member
+    const handleDelete = (member) => {
+        setEditedMember({ ...member });
+    };
+
+    // 按下刪除的modal的確認按鈕
+    const handleConfirmDelete  = async(e) =>{
+        e.preventDefault();
+        try {
+            const response = await axios.delete("/member",
+                // delete的資料傳送形式要跟其他的不一樣
+                {
+                    data:JSON.stringify({ editedMember }),
+                    headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                });
+                console.log(response.data);
+                Swal.fire({
+                    position: 'top',
+                    icon: 'success',
+                    title: '刪除成功！',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    allowOutsideClick:false
+                })
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
 
     return (
         <Transition>
@@ -93,12 +139,12 @@ const Member = () => {
                         </thead>
                         <tbody>
                             {members.map((member, index) => (
-                                <tr key={index}>
-                                    <td className="align-middle">{member._id}</td>
-                                    <td className="align-middle">{member.name}</td>
-                                    <td className="align-middle">{member.email}</td>
-                                    <td className="align-middle">{member.roles}</td>
-                                    <td className="align-middle"> <Link className="btn btn-warning" to={`/orders/${member._id}`}>訂單</Link></td>
+                                <tr className="align-middle" key={index}>
+                                    <td>{member._id}</td>
+                                    <td>{member.name}</td>
+                                    <td>{member.email}</td>
+                                    <td>{member.roles}</td>
+                                    <td> <Link className="btn btn-warning" to={`/orders/${member._id}`}>訂單</Link></td>
                                     <td>
                                         <button 
                                         type="button" 
@@ -116,7 +162,7 @@ const Member = () => {
                                         className="btn btn-danger" 
                                         data-bs-toggle="modal" 
                                         data-bs-target="#deleteModal"
-                                        // onClick={() => handleDelete(member)}
+                                        onClick={() => handleDelete(member)}
                                         >
                                             刪除
                                         </button>
@@ -156,7 +202,7 @@ const Member = () => {
                             )}
                         </div>
                         <div className="modal-footer">
-                            <input type="submit" value="確認" className="btn btn-success" form="editMember" data-bs-dismiss="modal" id="editOK" onClick={handleConfirmEdit}/>
+                            <input type="submit" value="確認" className="btn btn-success" form="editMember" data-bs-dismiss="modal" onClick={handleConfirmEdit}/>
                             <button type="button"  className="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                         </div>
                     </div>
@@ -172,14 +218,17 @@ const Member = () => {
                         <h5 className="modal-title" id="staticBackdropLabel">刪除會員資料</h5>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div className="modal-body d-flex flex-column justify-content-center w-modal mx-auto list-unstyled gap-2 border-0">
-                        {/* <p><span>ID：</span>{deleteMember._id}</p> */}
-                        {/* <p><span>電子信箱：</span>{deleteMember.email}</p> */}
-                        <p className="text-danger">確認刪除？</p>
-                    </div>
+                    {editedMember && (
+                        <div className="modal-body d-flex flex-column justify-content-center w-modal mx-auto list-unstyled gap-2 border-0">
+                            <p><span>ID：</span>{editedMember._id}</p>
+                            <p><span>電子信箱：</span>{editedMember.email}</p>
+                            <p><span>暱稱：</span>{editedMember.name}</p>
+                            <p><span>權限：</span>{editedMember.roles}</p>
+                            <p className="text-danger text-center bg-light">確認刪除？</p>
+                        </div>
+                    )}
                     <div className="modal-footer">
-                        {/* <input type="submit" value="確認" className="btn btn-success" form="editMember"/> */}
-                        <button type="button"  className="btn btn-danger" data-bs-dismiss="modal">確認</button>
+                        <button type="button"  className="btn btn-danger" data-bs-dismiss="modal" onClick={handleConfirmDelete}>確認</button>
                         <button type="button"  className="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                     </div>
                     </div>
@@ -191,21 +240,3 @@ const Member = () => {
 }
 
 export default Member
-
-
-// const handleDelete = (member) =>{
-//     setDeleteMember({ ...member });
-//     // try {
-//     //     const response = await axios.delete("/member",
-//     //         JSON.stringify({ member }),
-//     //         {
-//     //             headers: { 'Content-Type': 'application/json' },
-//     //             withCredentials: true
-//     //         }
-//     //         );
-//     //         // console.log(response.data);
-//     //         setMembers(response.data);;
-//     // } catch (error) {
-//     //     console.error(error);
-//     // }
-// };

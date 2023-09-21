@@ -8,10 +8,10 @@ dotenv.config({ path:"../.env" });
 
 const handleForgetPWD = async (req, res) => {
     // 解構賦值
-    const {user, email} = req.body;
+    const {email} = req.body;
     // 先驗證帳號
-    myDBconn.query('SELECT user,pwd,email FROM member WHERE user = ?', 
-    [user],
+    myDBconn.query('SELECT name,pwd,email FROM member WHERE email = ?', 
+    [email],
     async function (err, data){
         if(err){
             console.log("SQL指令執行錯誤=====");
@@ -23,7 +23,7 @@ const handleForgetPWD = async (req, res) => {
             // 有找到帳號
             // 產生resetPWDToken
             const resetPWDToken = jwt.sign(
-                { "user": user },
+                { "email": email },
                 process.env.RESET_TOKEN_SECRET,
                 { expiresIn: '15min' }
             );
@@ -41,7 +41,7 @@ const handleForgetPWD = async (req, res) => {
                 from: 'hank57054@gmail.com', // 從誰發出郵件
                 to: email,  // 要發給誰
                 subject: '重置密碼', // 電子郵件的標題
-                text: `http://localhost:3000/resetPWD/${user}/${resetPWDToken}` // 發送的內容
+                text: `http://localhost:3000/resetPWD/${email}/${resetPWDToken}` // 發送的內容
             };
             
             transporter.sendMail(mailOptions, function(error, info){

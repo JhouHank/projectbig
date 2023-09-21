@@ -25,27 +25,29 @@ const handleEditMember = async (req, res) => {
                 return res.sendStatus(400);
             } else {
                 // 執行成功
-                res.status(201).json({ 'success': `${name} 更改成功` });
+                res.status(201).json({ 'success': `${name} 會員編輯成功` });
             }
         })
 }
 
 const handleDeleteMember = async (req, res) => {
-    console.log("刪除的:",req.body);
-    // myDBconn.query('DELETE email FROM users where _id = ?', 
-    // async function(err, data){
-    //     if(err){
-    //         console.log("SQL指令執行錯誤=====");
-    //         console.log(err);
-    //     } else if (data.length == 0){
-    //         console.log(data.length);
-    //         return res.sendStatus(401);
-    //     } else if (data.length > 0){
-    //         console.log("成功");
-    //         res.json(data);
-    //     }
-    // })
+    const {_id,name} = req.body.editedMember;
+    myDBconn.query('DELETE FROM users where _id = ?',
+    [_id],
+    async function(err, data){
+        if(err){
+            console.log("SQL指令執行錯誤=====");
+            console.log(err);
+            return res.sendStatus(400);
+        } else {
+            // 執行成功
+            res.status(201).json({ 'success': `${name} 刪除成功` });
+        }
+    })
 }
 
 module.exports = { handleMember, handleEditMember, handleDeleteMember };
+
+
+
 

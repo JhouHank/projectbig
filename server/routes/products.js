@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const productsController = require('../controllers/productsController');
+const verifyJWT = require('../middleware/verifyJWT');
 const upload = require('../middleware/multer');
 
-router.post('/', productsController.handleProducts);
+
+router.post('/',verifyJWT,productsController.handleProducts);
 
 router.post('/new', upload.fields([
     { name: 'image', maxCount: 1 },
@@ -14,5 +16,8 @@ router.post('/new', upload.fields([
 router.put('/', productsController.handleEditProducts);
 
 router.put('/onSale', productsController.handleOnSaleProducts);
+
+router.delete('/', productsController.handleDeleteProducts);
+
 
 module.exports = router;

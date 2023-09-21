@@ -25,11 +25,12 @@ function App() {
       <Routes key={location.pathname} location={location}>
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="forgetPWD" element={<ForgetPWD />} />
+        <Route path="resetPWD/:user/:resetPWDToken" element={<ResetPWD />} />
+        
         <Route path="/" element={<Layout />}>
           {/* 無權限的路由 */}
           <Route path="unauthorized" element={<Unauthorized />} />
-          <Route path="forgetPWD" element={<ForgetPWD />} />
-          <Route path="resetPWD/:user/:resetPWDToken" element={<ResetPWD />} />
 
           {/* 有權限的路由 - 會用RequireAuth包起來 */}
           <Route element={<PersistLogin/>}>

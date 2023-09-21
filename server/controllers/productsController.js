@@ -25,7 +25,7 @@ const handleEditProducts = async (req, res) => {
                 return res.sendStatus(400);
             } else {
                 // 執行成功
-                res.status(201).json({ 'success': `${name} 更改成功` });
+                res.status(201).json({ 'success': `${name} 編輯產品成功` });
             }
         })
 
@@ -42,7 +42,7 @@ const handleOnSaleProducts = async (req, res) => {
                 return res.sendStatus(400);
             } else {
                 // 執行成功
-                res.status(201).json({ 'success': `${name} 更改成功` });
+                res.status(201).json({ 'success': `${name} 上下架成功` });
             }
         })
 }
@@ -66,4 +66,26 @@ const handleNewProducts = async (req, res) => {
     })
 }
 
-module.exports = { handleProducts,handleEditProducts,handleOnSaleProducts,handleNewProducts }
+const handleDeleteProducts = async (req, res) => {
+    const {_id,name} = req.body.editedProducts;
+    myDBconn.query('DELETE FROM products where _id = ?',
+    [_id],
+    async function(err, data){
+        if(err){
+            console.log("SQL指令執行錯誤=====");
+            console.log(err);
+            return res.sendStatus(400);
+        } else {
+            // 執行成功
+            res.status(201).json({ 'success': `${name} 刪除成功` });
+        }
+    })
+}
+
+module.exports = { 
+    handleProducts,
+    handleEditProducts,
+    handleOnSaleProducts,
+    handleNewProducts,
+    handleDeleteProducts 
+}
