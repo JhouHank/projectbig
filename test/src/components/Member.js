@@ -148,10 +148,6 @@ const Member = () => {
                                         <label htmlFor="name">暱稱：</label>
                                         <input type="text" id="name" name="name" required value={editedMember.name} onChange={handleInput} />
                                     </li>
-                                    {/* <li className="d-flex justify-content-between">
-                                        <label htmlFor="email">電子信箱：</label>
-                                        <input type="text" id="email" name="email" required value={editedMember.email} onChange={handleInput} />
-                                    </li> */}
                                     <li className="d-flex justify-content-between">
                                         <label htmlFor="roles">權限：</label>
                                         <input type="text" id="roles" name="roles" required value={editedMember.roles} onChange={handleInput} />

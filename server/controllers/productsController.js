@@ -45,7 +45,25 @@ const handleOnSaleProducts = async (req, res) => {
                 res.status(201).json({ 'success': `${name} 更改成功` });
             }
         })
-
 }
 
-module.exports = { handleProducts,handleEditProducts,handleOnSaleProducts }
+const handleNewProducts = async (req, res) => {
+    const {name, slug, category, price, countInStock, rating, description} = req.body;
+    const image = req.files.image[0].path.replace(/\\/g, '/').replace('public/images/', '/images/');
+    const gift_product = req.files.gift_product[0].path.replace(/\\/g, '/').replace('public/images/', '/images/');
+    const product_package = req.files.product_package[0].path.replace(/\\/g, '/').replace('public/images/', '/images/');
+    myDBconn.query('ALTER TABLE products AUTO_INCREMENT = 1'); // 讓ID從1開始
+    myDBconn.query("insert into products (name, slug, category, image, price, countInStock, rating, description, gift_product, product_package) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    [name, slug, category, image, price, countInStock, rating, description, gift_product, product_package],
+    async function(err, data){
+        if(err){
+            console.log("SQL指令執行錯誤=====");
+            console.log(err);
+        } else {
+            // 執行成功
+            res.status(201).json({ 'success': `新產品${slug}成功新增！` });
+        }
+    })
+}
+
+module.exports = { handleProducts,handleEditProducts,handleOnSaleProducts,handleNewProducts }

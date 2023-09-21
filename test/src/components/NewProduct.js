@@ -1,9 +1,12 @@
 import React,{ useState } from 'react';
-// import { useState } from 'react';
-// import { useState } from 'react';
+import axios from '../api/axios';
+import Swal from 'sweetalert2'
+import { useNavigate } from 'react-router-dom';
+
 
 
 const NewProduct = () => {
+    const navigate = useNavigate();
     const [productData, setProductData] = useState({
         name: '',
         slug: '',
@@ -16,7 +19,7 @@ const NewProduct = () => {
         gift_product: null,
         product_package: null,
     });
-
+    // 把輸入框的值傳給productData
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setProductData({
@@ -24,23 +27,7 @@ const NewProduct = () => {
             [name]: value,
         });
     };
-
-    const handleSubmit = (e) =>{
-        e.preventDefault();
-        console.log(productData);
-        // const formData = new FormData();
-        // formData.append('name', productData.name);
-        // formData.append('slug', productData.slug);
-        // formData.append('category', productData.category);
-        // formData.append('price', productData.price);
-        // formData.append('countInStock', productData.countInStock);
-        // formData.append('rating', productData.rating);
-        // formData.append('description', productData.description);
-        // formData.append('image', productData.image);
-        // console.log(formData);
-
-    }
-
+    // 把ID為image的值(上傳的圖片)給productData
     const handleImageUpload = (e) =>{
         const file = e.target.files[0];
         if (file) {
@@ -50,7 +37,67 @@ const NewProduct = () => {
             });
         }
     }
-    
+    // 把ID為gift_product的值(上傳的圖片)給productData
+    const handleGiftUpload = (e) =>{
+        const file = e.target.files[0];
+        if (file) {
+            setProductData({
+                ...productData,
+                gift_product: file,
+            });
+        }
+    }
+    // 把ID為product_package的值(上傳的圖片)給productData
+    const handlePackageUpload = (e) =>{
+        const file = e.target.files[0];
+        if (file) {
+            setProductData({
+                ...productData,
+                product_package: file,
+            });
+        }
+    }
+    // 上傳圖片的動作
+    const handleSubmit = async (e) =>{
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('name', productData.name);
+        formData.append('slug', productData.slug);
+        formData.append('category', productData.category);
+        formData.append('price', productData.price);
+        formData.append('countInStock', productData.countInStock);
+        formData.append('rating', productData.rating);
+        formData.append('description', productData.description);
+        formData.append('image', productData.image);
+        formData.append('gift_product', productData.gift_product);
+        formData.append('product_package', productData.product_package);
+
+        try {
+            const response = await axios.post("/products/new",
+                formData ,
+                {
+                    // headers: { 'Content-Type': 'application/json' },
+                    withCredentials: true
+                }
+            );
+            console.log("response:",response?.data);
+            Swal.fire({
+                position: 'top',
+                icon: 'success',
+                title: '新增成功！',
+                showConfirmButton: false,
+                timer: 1500,
+                allowOutsideClick:false
+            })
+            // navigate('/products')
+            setTimeout(() => {
+                navigate('/products');
+            }, 1500);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
 
     return (
         <div className='container w-newScreen px-4 border rounded-3 bg-white mt-3'>
@@ -112,18 +159,18 @@ const NewProduct = () => {
                         onChange={handleInputChange}
                     />
                 </li>
-                {/* <li className="d-flex justify-content-between mt-2">
+                <li className="d-flex justify-content-between mt-2">
                     <label htmlFor="gift_product" className='form-label'>Gift_Product：</label>
                     <input type="file" id="gift_product" name="gift_product" required className='form-control'
-                        onChange={handleImageUpload}
+                        onChange={handleGiftUpload}
                     />
                 </li>
                 <li className="d-flex justify-content-between mt-2">
                     <label htmlFor="product_package" className='form-label'>Product_Package：</label>
                     <input type="file" id="product_package" name="product_package" required className='form-control'
-                        onChange={handleImageUpload}
+                        onChange={handlePackageUpload}
                     />
-                </li> */}
+                </li>
                 <input type="submit" value="確認" className='btn btn-primary mx-auto w-75 m-3'/>
             </form>
         </div>

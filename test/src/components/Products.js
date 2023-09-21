@@ -164,12 +164,13 @@ function Products() {
                                     <td>
                                         <button 
                                         type="button" 
-                                        className="btn btn-primary" 
+                                        // className="btn btn-primary" 
+                                        className={products.onSale ? "btn btn-primary" : "btn btn-info"}
                                         data-bs-toggle="modal" 
                                         data-bs-target="#onSale"
                                         onClick={() => handleOnSaleClick(products)}
                                         >
-                                            {products.onSale ? "下架" : "UP架"}
+                                            {products.onSale ? "下架" : "上架"}
                                         </button>
                                     </td>
                                     <td>
