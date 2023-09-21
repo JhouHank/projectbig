@@ -244,7 +244,7 @@ function Products() {
                     </div>
                     <div className="modal-footer">
                         <input type="submit" value="確認" className="btn btn-success" form="editProducts" data-bs-dismiss="modal" onClick={handleConfirmEdit}/>
-                        <button type="button"  className="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                        <button type="button"  className="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                     </div>
                     </div>
                 </div>
@@ -270,7 +270,7 @@ function Products() {
                     </div>
                     <div className="modal-footer">
                         <input type="submit" value="確認" className="btn btn-success" data-bs-dismiss="modal" onClick={handleConfirmOnSale}/>
-                        <button type="button"  className="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                        <button type="button"  className="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                     </div>
                     </div>
                 </div>

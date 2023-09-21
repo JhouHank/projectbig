@@ -157,7 +157,7 @@ const Member = () => {
                         </div>
                         <div className="modal-footer">
                             <input type="submit" value="確認" className="btn btn-success" form="editMember" data-bs-dismiss="modal" id="editOK" onClick={handleConfirmEdit}/>
-                            <button type="button"  className="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                            <button type="button"  className="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                         </div>
                     </div>
                 </div>
@@ -180,7 +180,7 @@ const Member = () => {
                     <div className="modal-footer">
                         {/* <input type="submit" value="確認" className="btn btn-success" form="editMember"/> */}
                         <button type="button"  className="btn btn-danger" data-bs-dismiss="modal">確認</button>
-                        <button type="button"  className="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                        <button type="button"  className="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                     </div>
                     </div>
                 </div>
